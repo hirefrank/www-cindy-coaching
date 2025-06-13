@@ -1,0 +1,163 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ContactForm from '../components/ContactForm';
+---
+
+<Layout title="Contact - Cindy Romanzo Coaching">
+  <!-- Hero Section -->
+  <section class="section-padding bg-gradient-to-b from-muted/30 to-background">
+    <div class="max-w-4xl mx-auto container-padding text-center">
+      <h1 class="mb-24">Let's Connect</h1>
+      <p class="text-xl text-muted-foreground leading-relaxed">
+        Ready to explore how brain-body strategies can transform your approach to ADHD? 
+        I'd love to hear from you and discuss how I can support your journey.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Information & Forms -->
+  <section class="py-48">
+    <div class="max-w-6xl mx-auto container-padding">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-48">
+        <!-- Contact Information -->
+        <div>
+          <h2 class="mb-32">Get in Touch</h2>
+          
+          <div class="space-y-32 mb-48">
+            <div class="flex items-start space-x-16">
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span class="text-primary font-bold">📧</span>
+              </div>
+              <div>
+                <h3 class="mb-8">Email</h3>
+                <p class="text-muted-foreground">cindy@cindyromanzo.com</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-16">
+              <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span class="text-secondary font-bold">📍</span>
+              </div>
+              <div>
+                <h3 class="mb-8">Location</h3>
+                <p class="text-muted-foreground">Bergen County, New Jersey</p>
+              </div>
+            </div>
+            
+            <div class="flex items-start space-x-16">
+              <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span class="text-primary font-bold">⏰</span>
+              </div>
+              <div>
+                <h3 class="mb-8">Office Hours</h3>
+                <p class="text-muted-foreground mb-8">Monday - Friday: 9:00 AM - 5:00 PM</p>
+                <p class="text-muted-foreground">Evening and weekend sessions available by appointment</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Quick Scheduling -->
+          <div class="bg-muted/30 rounded-lg shadow-sm">
+            <div class="p-32">
+              <h3 class="mb-16">Quick Scheduling Options</h3>
+              <p class="text-muted-foreground mb-24">
+                Skip the form and schedule directly with me using the options below.
+              </p>
+              <div class="space-y-16">
+                <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+                  Schedule 45-Minute Consultation
+                </button>
+                <button class="btn-secondary w-full" data-cal-link="cindy-romanzo/office-hours">
+                  Schedule 15-Minute Office Hours
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Contact Form -->
+        <div>
+          <ContactForm client:load />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-48 bg-muted/30">
+    <div class="max-w-4xl mx-auto container-padding">
+      <div class="text-center mb-48">
+        <h2 class="mb-24">Frequently Asked Questions</h2>
+        <p class="text-xl text-muted-foreground">
+          Quick answers to common questions about my services and approach.
+        </p>
+      </div>
+      
+      <div class="space-y-24">
+        <div class="bg-card rounded-lg shadow-sm">
+          <div class="p-32">
+            <h3 class="mb-16">What makes your approach different?</h3>
+            <p class="text-muted-foreground">
+              My unique background as a physical therapist gives me deep insight into the brain-body 
+              connection. I combine traditional ADHD coaching with movement and sensory strategies, 
+              creating a more comprehensive approach to managing ADHD and executive function challenges.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-card rounded-lg shadow-sm">
+          <div class="p-32">
+            <h3 class="mb-16">Do you work with clients virtually or in-person?</h3>
+            <p class="text-muted-foreground">
+              I offer both virtual and in-person sessions to accommodate different preferences and 
+              locations. Virtual sessions allow me to work with clients beyond Bergen County, while 
+              in-person sessions can be beneficial for certain types of brain-body work.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-card rounded-lg shadow-sm">
+          <div class="p-32">
+            <h3 class="mb-16">How long does coaching typically last?</h3>
+            <p class="text-muted-foreground">
+              This varies greatly depending on individual goals and needs. Some clients work with me 
+              for a few months to address specific challenges, while others maintain ongoing coaching 
+              relationships for continued support and growth. We'll discuss your goals and create a 
+              plan that works for you.
+            </p>
+          </div>
+        </div>
+        
+        <div class="bg-card rounded-lg shadow-sm">
+          <div class="p-32">
+            <h3 class="mb-16">Do you accept insurance?</h3>
+            <p class="text-muted-foreground">
+              As coaching is not a medical service, it's typically not covered by insurance. However, 
+              some flexible spending accounts (FSA) or health savings accounts (HSA) may cover coaching 
+              services. I can provide receipts for your records and potential reimbursement requests.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="section-padding bg-primary">
+    <div class="max-w-4xl mx-auto container-padding text-center">
+      <h2 class="text-white mb-24">Ready to Take the Next Step?</h2>
+      <p class="text-xl text-primary-foreground/90 mb-32">
+        Whether you're looking for a quick conversation or ready to dive into coaching, 
+        I'm here to support your journey toward understanding and thriving with ADHD.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-16 justify-center">
+        <button class="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105" data-cal-link="cindy-romanzo/consultation">
+          Schedule Consultation
+        </button>
+        <button class="border-2 border-white text-white hover:bg-white hover:text-primary px-6 py-3 rounded-lg font-medium transition-all duration-200" data-cal-link="cindy-romanzo/office-hours">
+          Schedule Office Hours
+        </button>
+      </div>
+    </div>
+  </section>
+</Layout>
