@@ -9,13 +9,18 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "npm run build && wrangler deploy",
-    "deploy:preview": "npm run build && wrangler deploy --env preview"
+    "deploy:preview": "npm run build && wrangler deploy --env preview",
+    "extract-copy": "node scripts/extract-copy.js",
+    "import-copy": "node scripts/import-copy.js",
+    "migrate-to-sanity": "node scripts/migrate-to-sanity.js"
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
     "@astrojs/react": "^3.5.2",
     "@astrojs/tailwind": "^5.1.0",
     "@radix-ui/react-select": "^2.2.5",
+    "@sanity/client": "^7.6.0",
+    "@sanity/image-url": "^1.1.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.11.0",
@@ -25,6 +30,8 @@
     "typescript": "^5.5.3"
   },
   "devDependencies": {
+    "csv-parse": "^5.5.6",
+    "node-html-parser": "^6.1.13",
     "wrangler": "^4.20.0"
   }
 }
