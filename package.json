@@ -14,7 +14,10 @@
     "deploy:prod": "PUBLIC_SANITY_PROJECT_ID=y67p94j5 npm run deploy",
     "extract-copy": "node scripts/extract-copy.js",
     "import-copy": "node scripts/import-copy.js",
-    "migrate-to-sanity": "node scripts/migrate-to-sanity.js"
+    "migrate-to-sanity": "node scripts/migrate-to-sanity.js",
+    "migrate-to-modular": "tsx scripts/migrate-to-modular.ts",
+    "check-old-docs": "tsx scripts/check-old-documents.ts",
+    "cleanup-old-schemas": "tsx scripts/cleanup-old-schemas.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",
@@ -22,18 +25,20 @@
     "@astrojs/tailwind": "^5.1.0",
     "@radix-ui/react-select": "^2.2.5",
     "@sanity/client": "^7.6.0",
-    "@sanity/image-url": "^1.1.0",
     "@types/react": "^18.3.5",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.11.0",
+    "dotenv": "^16.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.3"
   },
   "devDependencies": {
+    "@types/node": "^24.0.3",
     "csv-parse": "^5.5.6",
     "node-html-parser": "^6.1.13",
+    "tsx": "^4.20.3",
     "wrangler": "^4.20.0"
   }
 }

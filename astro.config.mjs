@@ -19,10 +19,10 @@ export default defineConfig({
       }
     },
     optimizeDeps: {
-      exclude: ['@sanity/client']
+      include: ['@sanity/client']
     },
     ssr: {
-      noExternal: ['@sanity/client', '@sanity/image-url']
+      noExternal: ['@sanity/client']
     }
   }
 });

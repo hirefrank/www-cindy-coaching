@@ -1,16 +1,10 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { sanityClient, urlFor } from '../lib/sanity';
+import { urlFor } from '../lib/sanity';
+import { getHomePage } from '../lib/sanity-adapter';
 
-// Fetch content from Sanity
-const homePage = await sanityClient.fetch(`*[_type == "homePage"][0]{
-  seo,
-  hero,
-  trustIndicators,
-  servicesSection,
-  aboutSection,
-  ctaSection
-}`);
+// Fetch content from Sanity (uses adapter to work with both old and new structure)
+const homePage = await getHomePage();
 
 // Use fallback values if Sanity content is not available
 const content = homePage || {
