@@ -10,8 +10,7 @@
 ### Setup & Deployment
 - **[Setup Guide](./SETUP-GUIDE.md)** - Complete technical setup instructions
 - **[GitHub Actions Setup](./GITHUB-ACTIONS-SETUP.md)** - Automated deployment configuration
-- **[Sanity Webhooks - Simple](./SANITY-WEBHOOKS-SIMPLE.md)** - Easy deployment after content updates
-- **[Sanity Webhooks - Advanced](./SANITY-WEBHOOKS.md)** - Setting up automatic deployments with GitHub Actions
+- **[Sanity Webhooks](./SANITY-WEBHOOKS.md)** - Setting up automatic deployments with GitHub Actions
 
 ### Architecture
 - **[Sanity Architecture](./SANITY-ARCHITECTURE.md)** - Modular content design and implementation

@@ -3,11 +3,8 @@
 ## Overview
 This guide explains how to set up automatic deployments via GitHub Actions when content is updated in Sanity Studio.
 
-## The Challenge
-Sanity's webhook interface doesn't allow custom request bodies, but GitHub Actions needs a specific payload format to trigger deployments.
-
-## The Solution
-Use Sanity's "Projection" field with GROQ to customize the webhook payload to match GitHub's requirements.
+## Good News!
+Sanity's "Projection" field allows you to customize webhook payloads using GROQ, so you can trigger GitHub Actions directly!
 
 ## Setting Up Webhooks in Sanity Studio
 
@@ -20,7 +17,7 @@ Use Sanity's "Projection" field with GROQ to customize the webhook payload to ma
 
 ### 2. Configure the Webhook
 
-#### Option A: Direct GitHub Integration (Try This First)
+### Direct GitHub Integration
 
 1. **Create webhook in Sanity**:
    - **Name**: Deploy to Production
@@ -57,13 +54,16 @@ Use Sanity's "Projection" field with GROQ to customize the webhook payload to ma
    - Or for fine-grained tokens, grant:
      - Repository permissions: `Actions: write`, `Contents: read`, `Metadata: read`
 
-#### Option B: Alternative Solutions
+### Manual Deployment Alternative
 
-If the direct GitHub integration doesn't work:
+If you prefer to control when deployments happen:
 
-1. **Use Cloudflare Deploy Hooks** (see Cloudflare documentation)
-2. **Use a third-party webhook service** like Zapier or Make
-3. **Manually trigger deployments** via GitHub Actions UI
+1. **Publish your content** in Sanity Studio
+2. **Go to GitHub Actions**: https://github.com/[YOUR-USERNAME]/[YOUR-REPO]/actions
+3. **Click "Deploy to Cloudflare Workers"**
+4. **Click "Run workflow" → "Run workflow"**
+
+Your site will deploy in 2-3 minutes.
 
 ### 3. Test Your Webhook
 
