@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build",
+    "build": "NODE_OPTIONS='--max-old-space-size=4096' astro build",
+    "build:check": "astro check && npm run build",
     "preview": "astro preview",
     "astro": "astro",
-    "deploy": "npm run build && wrangler deploy",
+    "deploy": "./scripts/deploy.sh",
     "deploy:preview": "npm run build && wrangler deploy --env preview",
+    "deploy:prod": "PUBLIC_SANITY_PROJECT_ID=y67p94j5 npm run deploy",
     "extract-copy": "node scripts/extract-copy.js",
     "import-copy": "node scripts/import-copy.js",
     "migrate-to-sanity": "node scripts/migrate-to-sanity.js"

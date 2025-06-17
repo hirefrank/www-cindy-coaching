@@ -8,11 +8,21 @@ export default defineConfig({
     tailwind(),
     react()
   ],
+  output: 'static',
+  build: {
+    inlineStylesheets: 'auto'
+  },
   vite: {
     resolve: {
       alias: {
         '@': '/src'
       }
+    },
+    optimizeDeps: {
+      exclude: ['@sanity/client']
+    },
+    ssr: {
+      noExternal: ['@sanity/client', '@sanity/image-url']
     }
   }
 });
