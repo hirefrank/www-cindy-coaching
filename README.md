@@ -25,11 +25,11 @@ npm run deploy
 
 ## Documentation
 
-See [SETUP-GUIDE.md](./SETUP-GUIDE.md) for:
-- Complete setup instructions
-- Deployment configuration
-- Content management workflow
-- Troubleshooting guide
+All documentation is in the `docs/` folder:
+- [Setup Guide](./docs/SETUP-GUIDE.md) - Technical setup and deployment
+- [Client Guide](./docs/CLIENT-GUIDE.md) - Content management instructions
+- [Cal.com Setup](./docs/CAL-COM-SETUP.md) - Scheduling configuration
+- [GitHub Actions](./docs/GITHUB-ACTIONS-SETUP.md) - CI/CD setup
 
 ## Key Features
 
