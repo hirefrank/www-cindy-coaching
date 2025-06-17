@@ -14,8 +14,9 @@
 #### Content not updating on website
 1. Verify content is **published** in Sanity (not just saved)
 2. Check that `PUBLIC_SANITY_PROJECT_ID` is set correctly
-3. Wait 2-3 minutes for cache to clear, or run deployment manually
-4. Check browser console for any API errors
+3. Wait 2-3 minutes for cache to clear after automatic deployment
+4. If using webhooks, check GitHub Actions tab for deployment status
+5. Check browser console for any API errors
 
 ### Build & Deployment Issues
 
@@ -60,10 +61,11 @@ npm run check-old-docs
 node scripts/fix-sanity-data.js
 ```
 
-### Manual deployment
-```bash
-npm run deploy
-```
+### Manual deployment via GitHub Actions
+1. Go to the GitHub repository
+2. Click "Actions" tab
+3. Select "Deploy to Production" workflow
+4. Click "Run workflow" button
 
 ## Getting Help
 

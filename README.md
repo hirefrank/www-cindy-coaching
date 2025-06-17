@@ -19,8 +19,8 @@ npm install
 # Start development server
 npm run dev
 
-# Deploy to production
-npm run deploy
+# Build for production
+npm run build
 ```
 
 ## Documentation

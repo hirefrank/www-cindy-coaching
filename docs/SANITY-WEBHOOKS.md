@@ -1,7 +1,13 @@
-# Configuring Webhooks in Sanity
+# Configuring Webhooks in Sanity for GitHub Actions
 
 ## Overview
-Webhooks allow Sanity to automatically trigger deployments whenever content is published, updated, or deleted. This guide shows how to connect Sanity to your existing GitHub Actions deployment workflow.
+This guide explains how to set up automatic deployments via GitHub Actions when content is updated in Sanity Studio.
+
+## The Challenge
+Sanity's webhook interface doesn't allow custom request bodies, but GitHub Actions needs a specific payload format to trigger deployments.
+
+## The Solution
+Use Sanity's "Projection" field with GROQ to customize the webhook payload to match GitHub's requirements.
 
 ## Setting Up Webhooks in Sanity Studio
 
@@ -14,63 +20,59 @@ Webhooks allow Sanity to automatically trigger deployments whenever content is p
 
 ### 2. Configure the Webhook
 
-Fill in the following fields:
+#### Option A: Direct GitHub Integration (Try This First)
 
-#### Basic Configuration
-- **Name**: `Deploy to Cloudflare`
-- **Description**: `Trigger deployment when content changes`
-- **URL**: 
-  ```
-  https://api.github.com/repos/[YOUR-USERNAME]/[YOUR-REPO]/dispatches
-  ```
-  (Replace with your actual GitHub username and repository name)
+1. **Create webhook in Sanity**:
+   - **Name**: Deploy to Production
+   - **URL**: `https://api.github.com/repos/[YOUR-GITHUB-USERNAME]/[YOUR-REPO-NAME]/dispatches`
+   - **Dataset**: production
+   - **Trigger on**: Create, Update, Delete
+   - **Filter**: Leave empty to trigger on all changes
+   - **Projection**: Use this GROQ query:
+     ```groq
+     {
+       "event_type": "sanity-update",
+       "client_payload": {
+         "dataset": sanity::dataset(),
+         "projectId": sanity::projectId()
+       }
+     }
+     ```
+   - **HTTP Method**: POST
+   - **HTTP Headers**:
+     ```
+     Authorization: token [YOUR-GITHUB-PERSONAL-ACCESS-TOKEN]
+     Accept: application/vnd.github.v3+json
+     Content-Type: application/json
+     ```
+   - **Secret**: (Optional) Add a secret for security
+   - **Enable webhook**: On
 
-#### Dataset
-- Select: `production`
+2. **GitHub Personal Access Token Permissions**:
+   - Go to [GitHub Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens)
+   - Click "Generate new token (classic)"
+   - Select these permissions:
+     - `repo` (Full control of private repositories)
+     - `workflow` (Update GitHub Action workflows)
+   - Or for fine-grained tokens, grant:
+     - Repository permissions: `Actions: write`, `Contents: read`, `Metadata: read`
 
-#### Trigger On
-- ✅ Create
-- ✅ Update  
-- ✅ Delete
+#### Option B: Alternative Solutions
 
-#### Filter (Optional)
-Leave empty to trigger on all content changes
+If the direct GitHub integration doesn't work:
 
-#### Projection (Optional)
-Leave empty - not needed for deployment triggers
+1. **Use Cloudflare Deploy Hooks** (see Cloudflare documentation)
+2. **Use a third-party webhook service** like Zapier or Make
+3. **Manually trigger deployments** via GitHub Actions UI
 
-#### HTTP Method
-- Select: `POST`
+### 3. Test Your Webhook
 
-#### HTTP Headers
-Add these headers one by one:
-1. Click "Add header"
-2. **Header name**: `Authorization`
-   **Value**: `Bearer [YOUR-GITHUB-TOKEN]` (or `token [YOUR-GITHUB-TOKEN]`)
-3. Click "Add header" again
-4. **Header name**: `Accept`
-   **Value**: `application/vnd.github.v3+json`
-5. Click "Add header" again
-6. **Header name**: `Content-Type`
-   **Value**: `application/json`
+1. Make a small change in Sanity Studio
+2. Publish the change
+3. Check GitHub Actions to see if the workflow was triggered
+4. Monitor the deployment progress
 
-#### Request Body
-Look for one of these fields in the Sanity webhook form:
-- **Body**
-- **Payload**
-- **Request body**
-- **Custom payload**
-
-Enter this JSON:
-```json
-{
-  "event_type": "sanity-update"
-}
-```
-
-💡 **Note**: If you don't see a body/payload field, check if there's an "Advanced" section or toggle that reveals more options.
-
-### 3. Why This Works
+### 4. Why This Works
 
 This webhook triggers your **existing** GitHub Actions workflow (`.github/workflows/deploy.yml`) because it listens for:
 ```yaml
@@ -80,11 +82,19 @@ repository_dispatch:
 
 You don't need a separate workflow - the webhook just tells GitHub to run your existing deployment workflow!
 
-### 4. Test the Webhook
+### 5. Webhook Filters (Optional)
 
-1. Click **Save** to create the webhook
-2. Click **Test webhook** to send a test payload
-3. Verify the deployment was triggered
+To reduce unnecessary deployments, add filters:
+
+**Only deploy when specific document types change**:
+```groq
+_type in ["homePage", "hero", "service", "testimonial", "ctaBlock", "teamMember"]
+```
+
+**Only deploy on publish (not drafts)**:
+```groq
+!(_id in path("drafts.**"))
+```
 
 ## How It Works
 

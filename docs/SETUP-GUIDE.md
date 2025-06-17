@@ -53,29 +53,23 @@ Visit http://localhost:4321
 
 ## Deployment
 
-### Setting up Cloudflare
+### Automated Deployment via GitHub Actions
 
-1. **Environment variables are already configured** in `wrangler.toml`:
-   - `PUBLIC_SANITY_PROJECT_ID` is set for all environments
-   - Observability/logging is enabled for monitoring
+Deployment is handled automatically through GitHub Actions. The website deploys to Cloudflare Workers when:
+- Code is pushed to the main branch
+- A GitHub Actions workflow is manually triggered
+- Sanity content updates trigger a webhook (if configured)
 
-2. **Deploy Commands:**
-   ```bash
-   # Standard deployment
-   npm run deploy
-
-   # Production deployment (ensures env vars)
-   npm run deploy:prod
-   ```
+Environment variables are configured in `wrangler.toml`:
+- `PUBLIC_SANITY_PROJECT_ID` is set for all environments
+- Observability/logging is enabled for monitoring
 
 ### Content Management Workflow
 
 1. **Client edits content** at https://cindy-coaching.sanity.studio/
 2. **Client publishes changes** in Sanity
-3. **Deploy to update site:**
-   ```bash
-   npm run deploy
-   ```
+3. **Deployment happens automatically** via GitHub Actions (if webhooks are configured)
+   - Or manually trigger deployment in GitHub Actions tab
 
 ### Automated Deployments (Optional)
 
@@ -103,9 +97,7 @@ Quick setup:
 │   ├── schemas/      # Content models
 │   └── sanity.config.ts
 ├── scripts/
-│   ├── migrate-to-sanity.js  # Initial content migration
-│   ├── deploy.sh             # Deployment script
-│   └── webhook-deploy.js     # Webhook handler
+│   └── migrate-to-sanity.js  # Initial content migration
 └── public/           # Static assets
 ```
 
@@ -117,9 +109,8 @@ npm run dev          # Start dev server
 npm run build        # Build for production
 npm run preview      # Preview build locally
 
-# Deployment
-npm run deploy       # Deploy to Cloudflare
-npm run deploy:prod  # Deploy with env vars
+# Deployment is handled via GitHub Actions
+# See .github/workflows/deploy.yml
 
 # Content Management  
 npm run migrate-to-sanity  # One-time migration of hardcoded content to Sanity (requires SANITY_TOKEN)
