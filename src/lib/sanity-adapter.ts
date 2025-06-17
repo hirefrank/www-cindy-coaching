@@ -296,7 +296,7 @@ export async function getContactPage() {
       email: {
         icon: "email",
         label: "Email",
-        value: contact.email || "hello@cindyromanzo.com"
+        value: contact.email || "hello@mindfulbalanceadhdcoaching.com"
       },
       location: {
         icon: "location",
@@ -317,13 +317,13 @@ export async function getContactPage() {
           title: "Free Consultation",
           description: "15-minute discovery call to discuss your needs",
           buttonText: "Schedule Consultation",
-          calendlyLink: "cindy-romanzo/consultation"
+          calendlyLink: "mindfulbalance/consultation"
         },
         {
           title: "Office Hours",
           description: "Quick questions or follow-up support",
           buttonText: "Book Office Hours",
-          calendlyLink: "cindy-romanzo/office-hours"
+          calendlyLink: "mindfulbalance/office-hours"
         }
       ]
     },

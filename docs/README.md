@@ -20,7 +20,7 @@
 
 ## Quick Links
 
-- **Live Site**: https://cindyromanzo.com
+- **Live Site**: https://mindfulbalanceadhdcoaching.com
 - **Sanity Studio**: https://cindy-coaching.sanity.studio/
 - **GitHub Repository**: [Your repository URL]
 

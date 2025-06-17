@@ -17,7 +17,8 @@
     "migrate-to-sanity": "node scripts/migrate-to-sanity.js",
     "migrate-to-modular": "tsx scripts/migrate-to-modular.ts",
     "check-old-docs": "tsx scripts/check-old-documents.ts",
-    "cleanup-old-schemas": "tsx scripts/cleanup-old-schemas.ts"
+    "cleanup-old-schemas": "tsx scripts/cleanup-old-schemas.ts",
+    "update-domain": "tsx scripts/update-domain.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",

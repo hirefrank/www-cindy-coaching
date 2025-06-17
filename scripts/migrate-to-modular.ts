@@ -214,8 +214,8 @@ async function migrateContent() {
         ]
       },
       contact: {
-        email: 'hello@cindyromanzo.com',
-        calendlyUrl: 'https://calendly.com/cindyromanzo'
+        email: 'hello@mindfulbalanceadhdcoaching.com',
+        calendlyUrl: 'https://calendly.com/mindfulbalance'
       }
     });
 

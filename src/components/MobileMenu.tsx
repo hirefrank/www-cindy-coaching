@@ -79,10 +79,10 @@ export default function MobileMenu({ currentPath }: MobileMenuProps) {
               </div>
               
               <div className="mt-6 space-y-3">
-                <button className="w-full btn-primary" data-cal-link="cindy-romanzo/consultation">
+                <button className="w-full btn-primary" data-cal-link="mindfulbalance/consultation">
                   Schedule Consultation
                 </button>
-                <button className="w-full btn-secondary" data-cal-link="cindy-romanzo/office-hours">
+                <button className="w-full btn-secondary" data-cal-link="mindfulbalance/office-hours">
                   Schedule Office Hours
                 </button>
               </div>

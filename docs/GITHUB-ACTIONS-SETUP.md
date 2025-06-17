@@ -98,8 +98,8 @@ The workflow uses GitHub's built-in `GITHUB_TOKEN` which has limited permissions
 4. Red X = failed deployment (check logs)
 
 ### Deployment URLs
-- **Production**: https://cindyromanzo.com
-- **Preview**: https://preview.cindy-romanzo-coaching.workers.dev
+- **Production**: https://mindfulbalanceadhdcoaching.com
+- **Preview**: https://preview.mindful-balance-adhd-coaching.workers.dev
 
 ### Troubleshooting
 

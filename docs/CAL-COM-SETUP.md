@@ -1,4 +1,4 @@
-# Cal.com Setup Guide for Cindy Romanzo Coaching
+# Cal.com Setup Guide for Mindful Balance ADHD Coaching
 
 ## Overview
 
@@ -49,7 +49,7 @@ Your website references two specific event types. Create them exactly as shown:
 
 **Basic Information:**
 - **Title**: Free Consultation
-- **URL**: `cindy-romanzo/consultation`
+- **URL**: `mindfulbalance/consultation`
 - **Duration**: 15 minutes
 - **Description**:
   ```
@@ -74,7 +74,7 @@ Your website references two specific event types. Create them exactly as shown:
 
 **Basic Information:**
 - **Title**: Office Hours
-- **URL**: `cindy-romanzo/office-hours`
+- **URL**: `mindfulbalance/office-hours`
 - **Duration**: 30 minutes
 - **Description**:
   ```
@@ -160,7 +160,7 @@ Looking forward to speaking with you!
 Best,
 Cindy Romanzo
 ICF Certified ADHD Coach
-cindyromanzo.com
+mindfulbalanceadhdcoaching.com
 ```
 
 ### 3. Zoom Integration (Optional)
@@ -204,8 +204,8 @@ Your website is already set up to use Cal.com. The buttons work as follows:
 - **"Schedule Office Hours"** → Opens your office hours booking
 
 No changes needed on your website - just ensure your Cal.com event URLs match:
-- `cindy-romanzo/consultation`
-- `cindy-romanzo/office-hours`
+- `mindfulbalance/consultation`
+- `mindfulbalance/office-hours`
 
 ## Best Practices
 

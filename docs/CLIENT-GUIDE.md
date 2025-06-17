@@ -1,4 +1,4 @@
-# Cindy Romanzo Coaching - Complete Client Guide
+# Mindful Balance ADHD Coaching - Complete Client Guide
 
 Welcome! This guide covers everything you need to know about managing your website and coaching business tools.
 
@@ -82,8 +82,8 @@ See [CAL-COM-SETUP.md](./CAL-COM-SETUP.md) for detailed Cal.com configuration.
 ### Quick Setup Checklist
 - [ ] Create Cal.com account
 - [ ] Set up two event types:
-  - `cindy-romanzo/consultation` (15 min)
-  - `cindy-romanzo/office-hours` (30 min)
+  - `mindfulbalance/consultation` (15 min)
+  - `mindfulbalance/office-hours` (30 min)
 - [ ] Connect your calendar
 - [ ] Customize booking questions
 - [ ] Test the booking flow
@@ -114,9 +114,9 @@ If you need to force an immediate update:
 
 | Service | URL | Purpose |
 |---------|-----|---------|
-| Your Website | https://cindyromanzo.com | Live website |
+| Your Website | https://mindfulbalanceadhdcoaching.com | Live website |
 | Content Management | https://cindy-coaching.sanity.studio/ | Edit content |
-| Scheduling | https://cal.com/cindy-romanzo | Manage bookings |
+| Scheduling | https://cal.com/mindfulbalance | Manage bookings |
 | GitHub | [Your GitHub URL] | Code & deployment |
 
 ### Content Types Cheat Sheet

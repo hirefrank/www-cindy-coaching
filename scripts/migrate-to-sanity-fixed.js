@@ -347,7 +347,7 @@ const migrations = {
       email: {
         icon: '📧',
         label: 'Email',
-        value: 'cindy@cindyromanzo.com'
+        value: 'cindy@mindfulbalanceadhdcoaching.com'
       },
       location: {
         icon: '📍',
