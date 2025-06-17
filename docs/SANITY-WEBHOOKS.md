@@ -1,7 +1,7 @@
 # Configuring Webhooks in Sanity
 
 ## Overview
-Webhooks allow Sanity to notify your deployment system whenever content is published, updated, or deleted.
+Webhooks allow Sanity to automatically trigger deployments whenever content is published, updated, or deleted. This guide shows how to connect Sanity to your existing GitHub Actions deployment workflow.
 
 ## Setting Up Webhooks in Sanity Studio
 
@@ -19,22 +19,11 @@ Fill in the following fields:
 #### Basic Configuration
 - **Name**: `Deploy to Cloudflare`
 - **Description**: `Trigger deployment when content changes`
-- **URL**: Choose one of these options:
-  
-  **Option A - GitHub Actions (Recommended)**
+- **URL**: 
   ```
   https://api.github.com/repos/[YOUR-USERNAME]/[YOUR-REPO]/dispatches
   ```
-  
-  **Option B - Custom Webhook Endpoint**
-  ```
-  https://your-webhook-handler.com/deploy
-  ```
-  
-  **Option C - Cloudflare Deploy Hook**
-  ```
-  https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/[YOUR-HOOK-ID]
-  ```
+  (Replace with your actual GitHub username and repository name)
 
 #### Dataset
 - Select: `production`
@@ -45,44 +34,51 @@ Fill in the following fields:
 - ✅ Delete
 
 #### Filter (Optional)
-Leave empty to trigger on all content changes, or add filters like:
-```
-_type in ["homePage", "servicesPage", "aboutPage", "resourcesPage", "contactPage"]
-```
+Leave empty to trigger on all content changes
 
 #### Projection (Optional)
 Leave empty - not needed for deployment triggers
 
-### 3. Authentication Setup
+#### HTTP Method
+- Select: `POST`
 
-Depending on your chosen webhook endpoint:
+#### HTTP Headers
+Add these headers one by one:
+1. Click "Add header"
+2. **Header name**: `Authorization`
+   **Value**: `Bearer [YOUR-GITHUB-TOKEN]` (or `token [YOUR-GITHUB-TOKEN]`)
+3. Click "Add header" again
+4. **Header name**: `Accept`
+   **Value**: `application/vnd.github.v3+json`
+5. Click "Add header" again
+6. **Header name**: `Content-Type`
+   **Value**: `application/json`
 
-#### For GitHub Actions:
-- **HTTP Method**: `POST`
-- **HTTP Headers**:
-  ```
-  Authorization: token [YOUR-GITHUB-TOKEN]
-  Accept: application/vnd.github.v3+json
-  Content-Type: application/json
-  ```
-- **Request Body**:
-  ```json
-  {
-    "event_type": "sanity-update"
-  }
-  ```
+#### Request Body
+Look for one of these fields in the Sanity webhook form:
+- **Body**
+- **Payload**
+- **Request body**
+- **Custom payload**
 
-#### For Custom Endpoint:
-- **HTTP Method**: `POST`
-- **HTTP Headers**:
-  ```
-  Content-Type: application/json
-  X-Sanity-Webhook-Secret: [YOUR-SECRET]
-  ```
+Enter this JSON:
+```json
+{
+  "event_type": "sanity-update"
+}
+```
 
-#### For Cloudflare Deploy Hook:
-- **HTTP Method**: `POST`
-- No additional headers needed (URL includes authentication)
+💡 **Note**: If you don't see a body/payload field, check if there's an "Advanced" section or toggle that reveals more options.
+
+### 3. Why This Works
+
+This webhook triggers your **existing** GitHub Actions workflow (`.github/workflows/deploy.yml`) because it listens for:
+```yaml
+repository_dispatch:
+  types: [sanity-update]
+```
+
+You don't need a separate workflow - the webhook just tells GitHub to run your existing deployment workflow!
 
 ### 4. Test the Webhook
 
@@ -90,85 +86,17 @@ Depending on your chosen webhook endpoint:
 2. Click **Test webhook** to send a test payload
 3. Verify the deployment was triggered
 
-## Setting Up the Receiving End
+## How It Works
 
-### Option A: GitHub Actions
-
-Create `.github/workflows/deploy-on-sanity-update.yml`:
+Your existing GitHub Actions workflow (`.github/workflows/deploy.yml`) already listens for webhook events:
 
 ```yaml
-name: Deploy on Sanity Update
-
 on:
   repository_dispatch:
     types: [sanity-update]
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          
-      - name: Install dependencies
-        run: npm ci
-        
-      - name: Build site
-        run: npm run build
-        env:
-          PUBLIC_SANITY_PROJECT_ID: y67p94j5
-          
-      - name: Deploy to Cloudflare
-        run: npm run deploy:prod
-        env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
 ```
 
-### Option B: Custom Webhook Handler
-
-Use the existing `scripts/webhook-deploy.js` with a service like:
-
-1. **Vercel Functions**
-2. **Netlify Functions**
-3. **Cloudflare Workers**
-4. **AWS Lambda**
-
-Example Cloudflare Worker:
-
-```javascript
-export default {
-  async fetch(request, env) {
-    // Verify webhook secret
-    const secret = request.headers.get('X-Sanity-Webhook-Secret');
-    if (secret !== env.SANITY_WEBHOOK_SECRET) {
-      return new Response('Unauthorized', { status: 401 });
-    }
-
-    // Trigger deployment
-    const response = await fetch('https://api.cloudflare.com/client/v4/pages/webhooks/deploy_hooks/' + env.DEPLOY_HOOK_ID, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + env.CLOUDFLARE_API_TOKEN
-      }
-    });
-
-    return new Response('Deployment triggered', { status: 200 });
-  }
-}
-```
-
-### Option C: Direct Cloudflare Deploy Hook
-
-1. Go to Cloudflare Dashboard
-2. Navigate to Workers & Pages → Your project
-3. Go to Settings → Deploy Hooks
-4. Create a new deploy hook
-5. Copy the webhook URL
-6. Use this URL directly in Sanity webhook configuration
+When Sanity sends a webhook with `"event_type": "sanity-update"`, it triggers this workflow automatically. No additional workflows needed!
 
 ## Security Best Practices
 
