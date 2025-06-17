@@ -85,6 +85,10 @@ For Sanity webhooks to trigger deployments:
 5. Click "Generate token"
 6. Copy the token and use it in the Sanity webhook configuration
 
+## Note on Permissions
+
+The workflow uses GitHub's built-in `GITHUB_TOKEN` which has limited permissions. If you see "Resource not accessible by integration" errors, this is normal. The deployment will still work correctly.
+
 ## Monitoring Deployments
 
 ### View Deployment Status
