@@ -1,5 +1,6 @@
 ---
 import MobileMenu from '../components/MobileMenu';
+import { getSiteSettings } from '../lib/sanity-adapter';
 
 export interface Props {
   title: string;
@@ -16,6 +17,10 @@ const currentPath = Astro.url.pathname;
 const canonicalURL = new URL(currentPath, Astro.site || 'https://mindfulbalanceadhdcoaching.com');
 
 const isActive = (path: string) => currentPath === path;
+
+// Fetch site settings
+const siteSettings = await getSiteSettings();
+const { navigation, footer, contact, buttons } = siteSettings;
 ---
 
 <!DOCTYPE html>
@@ -90,7 +95,7 @@ const isActive = (path: string) => currentPath === path;
   <body>
     <div class="min-h-screen bg-background">
       <!-- Navigation -->
-      <nav class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
+      <nav class="sticky top-0 z-50 bg-white backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-20">
             <a href="/" class="text-xl font-semibold text-foreground hover:text-primary transition-colors">
@@ -98,53 +103,23 @@ const isActive = (path: string) => currentPath === path;
             </a>
             
             <div class="hidden md:flex items-center gap-10">
-              <a
-                href="/"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Home
-              </a>
-              <a
-                href="/about"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/about') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                About
-              </a>
-              <a
-                href="/services"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/services') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Services
-              </a>
-              <a
-                href="/resources"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/resources') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Resources
-              </a>
-              <a
-                href="/contact"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/contact') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Contact
-              </a>
+              {navigation?.map((item) => (
+                <a
+                  href={item.link}
+                  class={`text-base font-medium transition-colors hover:text-primary ${
+                    isActive(item.link) ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
+                  {item.title}
+                </a>
+              ))}
               <button class="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-lg font-medium text-base transition-all duration-200 hover:scale-105 ml-2" data-cal-link="mindfulbalance/consultation">
-                Schedule Consultation
+                {buttons?.scheduleConsultation || 'Schedule Consultation'}
               </button>
             </div>
 
             <!-- Mobile menu -->
-            <MobileMenu currentPath={currentPath} client:load />
+            <MobileMenu currentPath={currentPath} navigation={navigation} buttons={buttons} client:load />
           </div>
         </div>
       </nav>
@@ -159,50 +134,46 @@ const isActive = (path: string) => currentPath === path;
         <div class="max-w-7xl mx-auto container-padding py-32">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-24">
             <div class="md:col-span-2">
-              <h3 class="text-xl font-semibold mb-16">Cindy Romanzo</h3>
+              <h3 class="text-xl font-semibold mb-16">{footer?.aboutTitle || 'Cindy Romanzo'}</h3>
               <p class="text-muted-foreground mb-16 max-w-md">
-                ICF certified ADHD coach with 25+ years of Physical Therapy experience, 
-                specializing in brain-body strategies for neurodiverse individuals and families.
+                {footer?.aboutDescription || 'Helping families navigate ADHD and autism with evidence-based coaching strategies.'}
               </p>
               <div class="text-sm text-muted-foreground">
-                <p>ICF Associate Certified Coach (ACC)</p>
-                <p>Licensed Physical Therapist (MPT)</p>
-                <p>Certified ADHD Specialist (CAS)</p>
+                {footer?.credentials?.map((credential) => (
+                  <p>{credential}</p>
+                ))}
               </div>
             </div>
             
             <div>
               <h4 class="font-medium mb-16">Quick Links</h4>
               <div class="space-y-8 text-sm">
-                <a href="/about" class="block text-muted-foreground hover:text-primary transition-colors">
-                  About
-                </a>
-                <a href="/services" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Services
-                </a>
-                <a href="/resources" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Resources
-                </a>
-                <a href="/contact" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Contact
-                </a>
+                {footer?.footerLinks?.map((link) => (
+                  <a href={link.link} class="block text-muted-foreground hover:text-primary transition-colors">
+                    {link.title}
+                  </a>
+                )) || navigation?.slice(1).map((item) => (
+                  <a href={item.link} class="block text-muted-foreground hover:text-primary transition-colors">
+                    {item.title}
+                  </a>
+                ))}
               </div>
             </div>
             
             <div>
               <h4 class="font-medium mb-16">Contact</h4>
               <div class="space-y-8 text-sm text-muted-foreground">
-                <p>Bergen County, NJ</p>
-                <p>cindy@mindfulbalanceadhdcoaching.com</p>
+                <p>{contact?.location || 'Bergen County, NJ'}</p>
+                <p>{contact?.email || 'hello@mindfulbalanceadhdcoaching.com'}</p>
                 <button class="btn-primary mt-16" data-cal-link="mindfulbalance/office-hours">
-                  Schedule Office Hours
+                  {buttons?.scheduleOfficeHours || 'Schedule Office Hours'}
                 </button>
               </div>
             </div>
           </div>
           
           <div class="border-t border-border mt-32 pt-24 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Cindy Romanzo. All rights reserved.</p>
+            <p>{footer?.copyrightText || `© ${new Date().getFullYear()} Cindy Romanzo. All rights reserved.`}</p>
           </div>
         </div>
       </footer>
@@ -219,17 +190,38 @@ const isActive = (path: string) => currentPath === path;
             });
             
             // Initialize all Cal.com buttons
-            document.querySelectorAll('[data-cal-link]').forEach(button => {
-              const calLink = button.getAttribute('data-cal-link');
-              button.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.Cal("openModal", {
-                  calLink: calLink,
-                  config: {
-                    theme: "light"
-                  }
+            function setupCalButtons() {
+              document.querySelectorAll('[data-cal-link]').forEach(button => {
+                // Skip if already initialized
+                if (button.hasAttribute('data-cal-initialized')) return;
+                
+                const calLink = button.getAttribute('data-cal-link');
+                button.setAttribute('data-cal-initialized', 'true');
+                
+                button.addEventListener('click', (e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  window.Cal("openModal", {
+                    calLink: calLink,
+                    config: {
+                      theme: "light"
+                    }
+                  });
                 });
               });
+            }
+            
+            // Initial setup
+            setupCalButtons();
+            
+            // Re-run when DOM changes (for dynamically added buttons)
+            const observer = new MutationObserver(() => {
+              setupCalButtons();
+            });
+            
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true
             });
           } else {
             // Retry if Cal is not yet loaded

@@ -353,3 +353,63 @@ export async function getResources() {
   
   return resources || [];
 }
+
+export async function getSiteSettings() {
+  const settings = await sanityClient.fetch(`*[_type == "siteSettings"][0]{
+    title,
+    description,
+    logo,
+    navigation,
+    footer,
+    contact,
+    forms,
+    buttons,
+    errorPages
+  }`);
+  
+  return settings || {
+    navigation: [
+      { title: 'Home', link: '/' },
+      { title: 'About', link: '/about' },
+      { title: 'Services', link: '/services' },
+      { title: 'Resources', link: '/resources' },
+      { title: 'Contact', link: '/contact' }
+    ],
+    footer: {
+      aboutTitle: 'Cindy Romanzo',
+      aboutDescription: 'Helping families navigate ADHD and autism with evidence-based coaching strategies.',
+      credentials: [
+        'ICF Associate Certified Coach (ACC)',
+        'Licensed Physical Therapist (MPT)',
+        'Certified ADHD Specialist (CAS)'
+      ],
+      copyrightText: '© 2024 Cindy Romanzo. All rights reserved.'
+    },
+    contact: {
+      email: 'hello@mindfulbalanceadhdcoaching.com',
+      location: 'Bergen County, NJ'
+    },
+    forms: {
+      serviceOptions: [
+        {value: 'parent-coaching', label: 'Parent Coaching'},
+        {value: 'teen-coaching', label: 'Teen Coaching'},
+        {value: 'family-consulting', label: 'Family Consulting'},
+        {value: 'school-support', label: 'School Support'},
+        {value: 'workshops', label: 'Workshops & Training'},
+        {value: 'other', label: 'Other'}
+      ]
+    },
+    buttons: {
+      scheduleConsultation: 'Schedule Consultation',
+      scheduleOfficeHours: 'Schedule Office Hours'
+    },
+    errorPages: {
+      error404: {
+        title: '404',
+        message: 'Oops! Page not found',
+        description: 'The page you are looking for might have been moved or deleted.',
+        buttonText: 'Return to Home'
+      }
+    }
+  };
+}

@@ -5,7 +5,16 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const ContactForm = () => {
+interface ServiceOption {
+  value: string;
+  label: string;
+}
+
+interface ContactFormProps {
+  serviceOptions?: ServiceOption[];
+}
+
+const ContactForm = ({ serviceOptions = [] }: ContactFormProps) => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -80,14 +89,22 @@ const ContactForm = () => {
                 <SelectValue placeholder="Select a service" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="parent-coaching">Parent Coaching</SelectItem>
-                <SelectItem value="teen-coaching">Individual Coaching for Teens</SelectItem>
-                <SelectItem value="family-consulting">Family Consulting</SelectItem>
-                <SelectItem value="adult-coaching">Adult ADHD Coaching</SelectItem>
-                <SelectItem value="teacher-training">Teacher Training</SelectItem>
-                <SelectItem value="presentations">Parent Group Presentations</SelectItem>
-                <SelectItem value="office-hours">Professional Office Hours</SelectItem>
-                <SelectItem value="general">General Inquiry</SelectItem>
+                {serviceOptions.length > 0 ? (
+                  serviceOptions.map((option) => (
+                    <SelectItem key={option.value} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))
+                ) : (
+                  <>
+                    <SelectItem value="parent-coaching">Parent Coaching</SelectItem>
+                    <SelectItem value="teen-coaching">Teen Coaching</SelectItem>
+                    <SelectItem value="family-consulting">Family Consulting</SelectItem>
+                    <SelectItem value="school-support">School Support</SelectItem>
+                    <SelectItem value="workshops">Workshops & Training</SelectItem>
+                    <SelectItem value="other">Other</SelectItem>
+                  </>
+                )}
               </SelectContent>
             </Select>
           </div>

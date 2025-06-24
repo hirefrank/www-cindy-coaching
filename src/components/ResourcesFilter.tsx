@@ -69,9 +69,11 @@ const categories = [
   "Classroom/Educational Support"
 ];
 
-export default function ResourcesFilter() {
+export default function ResourcesFilter({ blogPosts = defaultBlogPosts, categories = defaultCategories }: ResourcesFilterProps) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+
+  const allCategories = ["All", ...categories];
 
   const filteredPosts = blogPosts.filter(post => {
     const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
@@ -97,7 +99,7 @@ export default function ResourcesFilter() {
         </div>
         
         <div className="flex flex-wrap gap-12">
-          {categories.map((category) => (
+          {allCategories.map((category) => (
             <button
               key={category}
               onClick={() => setSelectedCategory(category)}

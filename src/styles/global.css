@@ -123,4 +123,15 @@
   .btn-outline {
     @apply border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200;
   }
+  
+  /* Ensure mobile menu works properly on iOS devices */
+  .mobile-menu-open {
+    @apply overflow-hidden;
+  }
+  
+  /* Prevent iOS bounce when menu is open */
+  .mobile-menu-open body {
+    position: fixed;
+    width: 100%;
+  }
 }

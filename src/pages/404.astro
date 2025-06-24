@@ -1,6 +1,16 @@
 ---
+import { getSiteSettings } from '../lib/sanity-adapter';
+
 const pathname = Astro.url.pathname;
 console.error("404 Error: User attempted to access non-existent route:", pathname);
+
+const siteSettings = await getSiteSettings();
+const errorContent = siteSettings?.errorPages?.error404 || {
+  title: '404',
+  message: 'Oops! Page not found',
+  description: 'The page you are looking for might have been moved or deleted.',
+  buttonText: 'Return to Home'
+};
 ---
 
 <!DOCTYPE html>
@@ -16,10 +26,13 @@ console.error("404 Error: User attempted to access non-existent route:", pathnam
   <body>
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
       <div class="text-center">
-        <h1 class="text-4xl font-bold mb-4">404</h1>
-        <p class="text-xl text-gray-600 mb-4">Oops! Page not found</p>
+        <h1 class="text-4xl font-bold mb-4">{errorContent.title}</h1>
+        <p class="text-xl text-gray-600 mb-4">{errorContent.message}</p>
+        {errorContent.description && (
+          <p class="text-gray-500 mb-8">{errorContent.description}</p>
+        )}
         <a href="/" class="text-blue-500 hover:text-blue-700 underline">
-          Return to Home
+          {errorContent.buttonText}
         </a>
       </div>
     </div>
