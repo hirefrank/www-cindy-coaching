@@ -23,3 +23,6 @@ pnpm-debug.log*
 # editor directories
 .vscode/
 .idea/
+
+# Cloudflare
+.wrangler/
