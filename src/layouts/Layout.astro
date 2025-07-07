@@ -1,253 +1,308 @@
 ---
-import MobileMenu from '../components/MobileMenu';
+import MobileMenu from "../components/MobileMenu";
 
 export interface Props {
-  title: string;
-  description?: string;
-  ogImage?: string;
+    title: string;
+    description?: string;
+    ogImage?: string;
 }
 
-const { 
-  title, 
-  description = "ICF certified ADHD coach with 25+ years of Physical Therapy experience, specializing in brain-body strategies for neurodiverse individuals and families.",
-  ogImage = "/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg"
+const {
+    title,
+    description = "ICF certified ADHD coach with 25+ years of Physical Therapy experience, specializing in brain-body strategies for neurodiverse individuals and families.",
+    ogImage = "/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg",
 } = Astro.props;
 const currentPath = Astro.url.pathname;
-const canonicalURL = new URL(currentPath, Astro.site || 'https://cindyromanzo.com');
+const canonicalURL = new URL(
+    currentPath,
+    Astro.site || "https://mindfulbalanceadhdcoaching.com",
+);
 
 const isActive = (path: string) => currentPath === path;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title} - Cindy Romanzo</title>
-    
-    <!-- Canonical URL -->
-    <link rel="canonical" href={canonicalURL} />
-    
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonicalURL} />
-    <meta property="og:title" content={`${title} - Cindy Romanzo`} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={new URL(ogImage, canonicalURL)} />
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image" />
-    <meta property="twitter:url" content={canonicalURL} />
-    <meta property="twitter:title" content={`${title} - Cindy Romanzo`} />
-    <meta property="twitter:description" content={description} />
-    <meta property="twitter:image" content={new URL(ogImage, canonicalURL)} />
-    
-    <!-- Additional SEO -->
-    <meta name="author" content="Cindy Romanzo" />
-    <meta name="keywords" content="ADHD coach, executive function coach, neurodiverse support, Bergen County NJ, parent coaching, teen ADHD coaching, brain-body strategies" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Cal.com Embed -->
-    <script is:inline async src="https://app.cal.com/embed/embed.js"></script>
-    
-    <!-- Google Analytics -->
-    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-    <script is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
-    </script>
-    
-    <!-- Schema.org Local Business -->
-    <script is:inline type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "LocalBusiness",
-        "name": "Cindy Romanzo ADHD Coaching",
-        "description": "ICF certified ADHD coach specializing in brain-body strategies for neurodiverse individuals and families",
-        "url": "https://cindyromanzo.com",
-        "telephone": "",
-        "email": "cindy@cindyromanzo.com",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bergen County",
-          "addressRegion": "NJ",
-          "addressCountry": "US"
-        },
-        "priceRange": "$$",
-        "openingHours": "Mo-Fr 09:00-17:00",
-        "image": "https://cindyromanzo.com/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg",
-        "sameAs": []
-      }
-    </script>
-  </head>
-  <body>
-    <div class="min-h-screen bg-background">
-      <!-- Navigation -->
-      <nav class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-20">
-            <a href="/" class="text-xl font-semibold text-foreground hover:text-primary transition-colors">
-              Cindy Romanzo
-            </a>
-            
-            <div class="hidden md:flex items-center gap-10">
-              <a
-                href="/"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Home
-              </a>
-              <a
-                href="/about"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/about') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                About
-              </a>
-              <a
-                href="/services"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/services') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Services
-              </a>
-              <a
-                href="/resources"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/resources') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Resources
-              </a>
-              <a
-                href="/contact"
-                class={`text-base font-medium transition-colors hover:text-primary ${
-                  isActive('/contact') ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                Contact
-              </a>
-              <button class="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-lg font-medium text-base transition-all duration-200 hover:scale-105 ml-2" data-cal-link="cindy-romanzo/consultation">
-                Schedule Consultation
-              </button>
-            </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content={description} />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{title} - Cindy Romanzo</title>
 
-            <!-- Mobile menu -->
-            <MobileMenu currentPath={currentPath} client:load />
-          </div>
+        <!-- Canonical URL -->
+        <link rel="canonical" href={canonicalURL} />
+
+        <!-- Open Graph / Facebook -->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={`${title} - Cindy Romanzo`} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={new URL(ogImage, canonicalURL)} />
+
+        <!-- Twitter -->
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={`${title} - Cindy Romanzo`} />
+        <meta property="twitter:description" content={description} />
+        <meta
+            property="twitter:image"
+            content={new URL(ogImage, canonicalURL)}
+        />
+
+        <!-- Additional SEO -->
+        <meta name="author" content="Cindy Romanzo" />
+        <meta
+            name="keywords"
+            content="ADHD coach, executive function coach, neurodiverse support, Bergen County NJ, parent coaching, teen ADHD coaching, brain-body strategies"
+        />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Cal.com Embed -->
+        <script is:inline async src="https://app.cal.com/embed/embed.js"
+        ></script>
+
+        <!-- Google Analytics -->
+        <script
+            is:inline
+            async
+            src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+        ></script>
+        <script is:inline>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag("js", new Date());
+            gtag("config", "G-XXXXXXXXXX");
+        </script>
+
+        <!-- Schema.org Local Business -->
+        <script is:inline type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "name": "Cindy Romanzo ADHD Coaching",
+                "description": "ICF certified ADHD coach specializing in brain-body strategies for neurodiverse individuals and families",
+                "url": "https://mindfulbalanceadhdcoaching.com",
+                "telephone": "",
+                "email": "cindy@cindyromanzo.com",
+                "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": "Bergen County",
+                    "addressRegion": "NJ",
+                    "addressCountry": "US"
+                },
+                "priceRange": "$$",
+                "openingHours": "Mo-Fr 09:00-17:00",
+                "image": "https://mindfulbalanceadhdcoaching.com/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg",
+                "sameAs": []
+            }
+        </script>
+    </head>
+    <body>
+        <div class="min-h-screen bg-background">
+            <!-- Navigation -->
+            <nav
+                class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80 border-b border-border"
+            >
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between h-20">
+                        <a
+                            href="/"
+                            class="text-xl font-semibold text-foreground hover:text-primary transition-colors"
+                        >
+                            Cindy Romanzo
+                        </a>
+
+                        <div class="hidden md:flex items-center gap-10">
+                            <a
+                                href="/"
+                                class={`text-base font-medium transition-colors hover:text-primary ${
+                                    isActive("/")
+                                        ? "text-primary"
+                                        : "text-muted-foreground"
+                                }`}
+                            >
+                                Home
+                            </a>
+                            <a
+                                href="/about"
+                                class={`text-base font-medium transition-colors hover:text-primary ${
+                                    isActive("/about")
+                                        ? "text-primary"
+                                        : "text-muted-foreground"
+                                }`}
+                            >
+                                About
+                            </a>
+                            <a
+                                href="/services"
+                                class={`text-base font-medium transition-colors hover:text-primary ${
+                                    isActive("/services")
+                                        ? "text-primary"
+                                        : "text-muted-foreground"
+                                }`}
+                            >
+                                Services
+                            </a>
+                            <a
+                                href="/contact"
+                                class={`text-base font-medium transition-colors hover:text-primary ${
+                                    isActive("/contact")
+                                        ? "text-primary"
+                                        : "text-muted-foreground"
+                                }`}
+                            >
+                                Contact
+                            </a>
+                            <button
+                                class="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-lg font-medium text-base transition-all duration-200 hover:scale-105 ml-2"
+                                data-cal-link="cindy-romanzo/consultation"
+                            >
+                                Schedule Consultation
+                            </button>
+                        </div>
+
+                        <!-- Mobile menu -->
+                        <MobileMenu currentPath={currentPath} client:load />
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <main>
+                <slot />
+            </main>
+
+            <!-- Footer -->
+            <footer class="bg-muted/50 border-t border-border">
+                <div class="max-w-7xl mx-auto container-padding py-32">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-24">
+                        <div class="md:col-span-2">
+                            <h3 class="text-xl font-semibold mb-16">
+                                Cindy Romanzo
+                            </h3>
+                            <p class="text-muted-foreground mb-16 max-w-md">
+                                ICF certified ADHD coach with 25+ years of
+                                Physical Therapy experience, specializing in
+                                brain-body strategies for neurodiverse
+                                individuals and families.
+                            </p>
+                            <div class="text-sm text-muted-foreground">
+                                <p>ICF Associate Certified Coach (ACC)</p>
+                                <p>Licensed Physical Therapist (MPT)</p>
+                                <p>Certified ADHD Specialist (CAS)</p>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium mb-16">Quick Links</h4>
+                            <div class="space-y-8 text-sm">
+                                <a
+                                    href="/about"
+                                    class="block text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                    About
+                                </a>
+                                <a
+                                    href="/services"
+                                    class="block text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                    Services
+                                </a>
+                                <a
+                                    href="/resources"
+                                    class="block text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                    Resources
+                                </a>
+                                <a
+                                    href="/contact"
+                                    class="block text-muted-foreground hover:text-primary transition-colors"
+                                >
+                                    Contact
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h4 class="font-medium mb-16">Contact</h4>
+                            <div
+                                class="space-y-8 text-sm text-muted-foreground"
+                            >
+                                <p>Bergen County, NJ</p>
+                                <button
+                                    class="btn-primary mt-16"
+                                    data-cal-link="cindy-romanzo/office-hours"
+                                >
+                                    Schedule Office Hours
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div
+                        class="border-t border-border mt-32 pt-24 text-center text-sm text-muted-foreground"
+                    >
+                        <p>
+                            &copy; {new Date().getFullYear()} Cindy Romanzo. All
+                            rights reserved.
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
-      </nav>
 
-      <!-- Main Content -->
-      <main>
-        <slot />
-      </main>
+        <!-- Cal.com popup initialization -->
+        <script is:inline>
+            (function () {
+                // Wait for Cal to be available
+                function initCal() {
+                    if (window.Cal) {
+                        window.Cal("init", {
+                            origin: "https://cal.com",
+                        });
 
-      <!-- Footer -->
-      <footer class="bg-muted/50 border-t border-border">
-        <div class="max-w-7xl mx-auto container-padding py-32">
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-24">
-            <div class="md:col-span-2">
-              <h3 class="text-xl font-semibold mb-16">Cindy Romanzo</h3>
-              <p class="text-muted-foreground mb-16 max-w-md">
-                ICF certified ADHD coach with 25+ years of Physical Therapy experience, 
-                specializing in brain-body strategies for neurodiverse individuals and families.
-              </p>
-              <div class="text-sm text-muted-foreground">
-                <p>ICF Associate Certified Coach (ACC)</p>
-                <p>Licensed Physical Therapist (MPT)</p>
-                <p>Certified ADHD Specialist (CAS)</p>
-              </div>
-            </div>
-            
-            <div>
-              <h4 class="font-medium mb-16">Quick Links</h4>
-              <div class="space-y-8 text-sm">
-                <a href="/about" class="block text-muted-foreground hover:text-primary transition-colors">
-                  About
-                </a>
-                <a href="/services" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Services
-                </a>
-                <a href="/resources" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Resources
-                </a>
-                <a href="/contact" class="block text-muted-foreground hover:text-primary transition-colors">
-                  Contact
-                </a>
-              </div>
-            </div>
-            
-            <div>
-              <h4 class="font-medium mb-16">Contact</h4>
-              <div class="space-y-8 text-sm text-muted-foreground">
-                <p>Bergen County, NJ</p>
-                <p>cindy@cindyromanzo.com</p>
-                <button class="btn-primary mt-16" data-cal-link="cindy-romanzo/office-hours">
-                  Schedule Office Hours
-                </button>
-              </div>
-            </div>
-          </div>
-          
-          <div class="border-t border-border mt-32 pt-24 text-center text-sm text-muted-foreground">
-            <p>&copy; {new Date().getFullYear()} Cindy Romanzo. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-    
-    <!-- Cal.com popup initialization -->
-    <script is:inline>
-      (function() {
-        // Wait for Cal to be available
-        function initCal() {
-          if (window.Cal) {
-            window.Cal("init", {
-              origin: "https://cal.com"
-            });
-            
-            // Initialize all Cal.com buttons
-            document.querySelectorAll('[data-cal-link]').forEach(button => {
-              const calLink = button.getAttribute('data-cal-link');
-              button.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.Cal("openModal", {
-                  calLink: calLink,
-                  config: {
-                    theme: "light"
-                  }
-                });
-              });
-            });
-          } else {
-            // Retry if Cal is not yet loaded
-            setTimeout(initCal, 100);
-          }
-        }
-        
-        // Initialize when DOM is ready
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initCal);
-        } else {
-          initCal();
-        }
-      })();
-    </script>
-  </body>
+                        // Initialize all Cal.com buttons
+                        document
+                            .querySelectorAll("[data-cal-link]")
+                            .forEach((button) => {
+                                const calLink =
+                                    button.getAttribute("data-cal-link");
+                                button.addEventListener("click", (e) => {
+                                    e.preventDefault();
+                                    window.Cal("openModal", {
+                                        calLink: calLink,
+                                        config: {
+                                            theme: "light",
+                                        },
+                                    });
+                                });
+                            });
+                    } else {
+                        // Retry if Cal is not yet loaded
+                        setTimeout(initCal, 100);
+                    }
+                }
+
+                // Initialize when DOM is ready
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", initCal);
+                } else {
+                    initCal();
+                }
+            })();
+        </script>
+    </body>
 </html>
 
 <style is:global>
-  @import '../styles/global.css';
+    @import "../styles/global.css";
 </style>
