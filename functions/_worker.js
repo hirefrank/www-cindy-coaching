@@ -1,6 +1,6 @@
 // Cloudflare Worker for handling contact form submissions
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     const url = new URL(request.url);
     
     // Handle contact form API endpoint
