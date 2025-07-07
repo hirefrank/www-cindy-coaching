@@ -19,33 +19,23 @@ const ContactForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      if (response.ok) {
-        alert('Message sent successfully!');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          interest: '',
-          subject: '',
-          message: ''
-        });
-      } else {
-        alert('Failed to send message. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
-    }
+    // For now, just show a success message
+    // TODO: Add email functionality once deployment is stable
+    alert('Thank you for your message! We will get back to you soon.');
+    
+    // Clear the form
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      interest: '',
+      subject: '',
+      message: ''
+    });
+    
+    // Log the submission for debugging
+    console.log('Contact form submission:', formData);
   };
 
   const handleChange = (field: string, value: string) => {
