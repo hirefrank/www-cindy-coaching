@@ -52,41 +52,20 @@ Submitted at: ${new Date().toISOString()}
 IP Address: ${request.headers.get('CF-Connecting-IP') || 'Unknown'}
     `;
 
-    // Send email using Cloudflare Email Workers
-    try {
-      const { EmailMessage } = await import("cloudflare:email");
-      
-      const emailMessage = new EmailMessage(
-        "noreply@mindfulbalanceadhdcoaching.com",
-        env.CONTACT_EMAIL || "cindy@cindyromanzo.com",
-        `From: Contact Form <noreply@mindfulbalanceadhdcoaching.com>
-To: ${env.CONTACT_EMAIL || "cindy@cindyromanzo.com"}
-Reply-To: ${email}
-Subject: Contact Form: ${subject}
+    // Log the form submission (visible in Cloudflare dashboard logs)
+    console.log('📧 Contact form submission received:', {
+      name: `${firstName} ${lastName}`,
+      email,
+      phone: formData.phone || 'Not provided',
+      interest: formData.interest || 'Not specified', 
+      subject,
+      message,
+      timestamp: new Date().toISOString(),
+      ip: request.headers.get('CF-Connecting-IP') || 'Unknown'
+    });
 
-${emailContent}`
-      );
-
-      await env.EMAIL.send(emailMessage);
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
-      
-      // Still return success to user but log the error
-      // You could also store in D1 database as backup
-      return new Response(
-        JSON.stringify({ 
-          success: true, 
-          message: 'Form submitted successfully. We will get back to you soon!' 
-        }),
-        {
-          status: 200,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        }
-      );
-    }
+    // TODO: Add email sending once deployment is stable
+    // For now, submissions are logged to Cloudflare dashboard
 
     return new Response(
       JSON.stringify({ 
