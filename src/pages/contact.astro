@@ -1,16 +1,66 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ContactForm from '../components/ContactForm';
+import CalButton from '../components/CalButton';
+import { getGlobalSettings, getContactContent } from '../lib/cosmic';
+
+// Fetch content from Cosmic
+const globalSettings = await getGlobalSettings();
+const contactData = await getContactContent();
+
+// Extract global settings with fallbacks
+const siteEmail = globalSettings?.metadata?.email || "cindy@mindfulbalanceadhdcoaching.com";
+const siteLocation = globalSettings?.metadata?.location || "Bergen County, NJ";
+
+// Extract contact content with fallbacks
+const headline = contactData?.metadata?.headline || "Let's Connect";
+const description = contactData?.metadata?.description || "Ready to explore how brain-body strategies can transform your approach to ADHD? I'd love to hear from you and discuss how I can support your journey.";
+const officeHours = contactData?.metadata?.office_hours || "Monday - Friday: 9:00 AM - 5:00 PM\nEvening and weekend sessions available by appointment";
+
+// Extract FAQ data with fallbacks
+const faqHeader = contactData?.metadata?.faqs?.faq_header || "Frequently Asked Questions";
+const faqDescription = contactData?.metadata?.faqs?.faq_description || "Quick answers to common questions about my services and approach.";
+const faqs = contactData?.metadata?.faqs?.faq_content || [
+  {
+    question: "What makes your approach different?",
+    answer: "My unique background as a physical therapist gives me deep insight into the brain-body connection. I combine traditional ADHD coaching with movement and sensory strategies, creating a more comprehensive approach to managing ADHD and executive function challenges."
+  },
+  {
+    question: "Do you work with clients virtually or in-person?",
+    answer: "I offer both virtual and in-person sessions to accommodate different preferences and locations. Virtual sessions allow me to work with clients beyond Bergen County, while in-person sessions can be beneficial for certain types of brain-body work."
+  },
+  {
+    question: "How long does coaching typically last?",
+    answer: "This varies greatly depending on individual goals and needs. Some clients work with me for a few months to address specific challenges, while others maintain ongoing coaching relationships for continued support and growth. We'll discuss your goals and create a plan that works for you."
+  },
+  {
+    question: "Do you accept insurance?",
+    answer: "As coaching is not a medical service, it's typically not covered by insurance. However, some flexible spending accounts (FSA) or health savings accounts (HSA) may cover coaching services. I can provide receipts for your records and potential reimbursement requests."
+  }
+];
+
+// Extract calendar links with fallbacks
+const calendarLinks = {
+    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation",
+    officeHours: globalSettings?.metadata?.calendar_links?.office_hours || "cindy-romanzo/office-hours"
+};
+
+// Helper function to extract cal.com slug from full URL
+const getCalSlug = (url: string) => {
+    if (url.includes('cal.com/')) {
+        return url.split('cal.com/')[1];
+    }
+    return url;
+};
 ---
 
 <Layout title="Contact - Cindy Romanzo Coaching">
   <!-- Hero Section -->
   <section class="section-padding bg-gradient-to-b from-muted/30 to-background">
     <div class="max-w-4xl mx-auto container-padding text-center">
-      <h1 class="mb-24">Let's Connect</h1>
+      <h1 class="mb-24">{headline}</h1>
       <p class="text-xl text-muted-foreground leading-relaxed">
-        Ready to explore how brain-body strategies can transform your approach to ADHD? 
-        I'd love to hear from you and discuss how I can support your journey.
+        {description}
       </p>
     </div>
   </section>
@@ -30,7 +80,7 @@ import ContactForm from '../components/ContactForm';
               </div>
               <div>
                 <h3 class="mb-8">Email</h3>
-                <p class="text-muted-foreground">cindy@cindyromanzo.com</p>
+                <p class="text-muted-foreground">{siteEmail}</p>
               </div>
             </div>
             
@@ -40,7 +90,7 @@ import ContactForm from '../components/ContactForm';
               </div>
               <div>
                 <h3 class="mb-8">Location</h3>
-                <p class="text-muted-foreground">Bergen County, New Jersey</p>
+                <p class="text-muted-foreground">{siteLocation}</p>
               </div>
             </div>
             
@@ -50,8 +100,9 @@ import ContactForm from '../components/ContactForm';
               </div>
               <div>
                 <h3 class="mb-8">Office Hours</h3>
-                <p class="text-muted-foreground mb-8">Monday - Friday: 9:00 AM - 5:00 PM</p>
-                <p class="text-muted-foreground">Evening and weekend sessions available by appointment</p>
+                {officeHours.split('\n').map((line: string) => (
+                  <p class="text-muted-foreground mb-8">{line}</p>
+                ))}
               </div>
             </div>
           </div>
@@ -64,12 +115,22 @@ import ContactForm from '../components/ContactForm';
                 Skip the form and schedule directly with me using the options below.
               </p>
               <div class="space-y-16">
-                <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+                <CalButton 
+                  calLink={getCalSlug(calendarLinks.consultation)}
+                  className="btn-primary w-full"
+                  namespace="contact-consultation"
+                  client:load
+                >
                   Schedule 45-Minute Consultation
-                </button>
-                <button class="btn-secondary w-full" data-cal-link="cindy-romanzo/office-hours">
+                </CalButton>
+                <CalButton 
+                  calLink={getCalSlug(calendarLinks.officeHours)}
+                  className="btn-secondary w-full"
+                  namespace="contact-office-hours"
+                  client:load
+                >
                   Schedule 15-Minute Office Hours
-                </button>
+                </CalButton>
               </div>
             </div>
           </div>
@@ -87,77 +148,25 @@ import ContactForm from '../components/ContactForm';
   <section class="py-48 bg-muted/30">
     <div class="max-w-4xl mx-auto container-padding">
       <div class="text-center mb-48">
-        <h2 class="mb-24">Frequently Asked Questions</h2>
+        <h2 class="mb-24">{faqHeader}</h2>
         <p class="text-xl text-muted-foreground">
-          Quick answers to common questions about my services and approach.
+          {faqDescription}
         </p>
       </div>
       
       <div class="space-y-24">
-        <div class="bg-card rounded-lg shadow-sm">
-          <div class="p-32">
-            <h3 class="mb-16">What makes your approach different?</h3>
-            <p class="text-muted-foreground">
-              My unique background as a physical therapist gives me deep insight into the brain-body 
-              connection. I combine traditional ADHD coaching with movement and sensory strategies, 
-              creating a more comprehensive approach to managing ADHD and executive function challenges.
-            </p>
+        {faqs.map((faq: any) => (
+          <div class="bg-card rounded-lg shadow-sm">
+            <div class="p-32">
+              <h3 class="mb-16">{faq.question}</h3>
+              <p class="text-muted-foreground">
+                {faq.answer}
+              </p>
+            </div>
           </div>
-        </div>
-        
-        <div class="bg-card rounded-lg shadow-sm">
-          <div class="p-32">
-            <h3 class="mb-16">Do you work with clients virtually or in-person?</h3>
-            <p class="text-muted-foreground">
-              I offer both virtual and in-person sessions to accommodate different preferences and 
-              locations. Virtual sessions allow me to work with clients beyond Bergen County, while 
-              in-person sessions can be beneficial for certain types of brain-body work.
-            </p>
-          </div>
-        </div>
-        
-        <div class="bg-card rounded-lg shadow-sm">
-          <div class="p-32">
-            <h3 class="mb-16">How long does coaching typically last?</h3>
-            <p class="text-muted-foreground">
-              This varies greatly depending on individual goals and needs. Some clients work with me 
-              for a few months to address specific challenges, while others maintain ongoing coaching 
-              relationships for continued support and growth. We'll discuss your goals and create a 
-              plan that works for you.
-            </p>
-          </div>
-        </div>
-        
-        <div class="bg-card rounded-lg shadow-sm">
-          <div class="p-32">
-            <h3 class="mb-16">Do you accept insurance?</h3>
-            <p class="text-muted-foreground">
-              As coaching is not a medical service, it's typically not covered by insurance. However, 
-              some flexible spending accounts (FSA) or health savings accounts (HSA) may cover coaching 
-              services. I can provide receipts for your records and potential reimbursement requests.
-            </p>
-          </div>
-        </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <!-- Final CTA -->
-  <section class="section-padding bg-primary">
-    <div class="max-w-4xl mx-auto container-padding text-center">
-      <h2 class="text-white mb-24">Ready to Take the Next Step?</h2>
-      <p class="text-xl text-primary-foreground/90 mb-32">
-        Whether you're looking for a quick conversation or ready to dive into coaching, 
-        I'm here to support your journey toward understanding and thriving with ADHD.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-16 justify-center">
-        <button class="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105" data-cal-link="cindy-romanzo/consultation">
-          Schedule Consultation
-        </button>
-        <button class="border-2 border-white text-white hover:bg-white hover:text-primary px-6 py-3 rounded-lg font-medium transition-all duration-200" data-cal-link="cindy-romanzo/office-hours">
-          Schedule Office Hours
-        </button>
-      </div>
-    </div>
-  </section>
 </Layout>

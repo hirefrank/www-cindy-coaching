@@ -1,11 +1,71 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import CalButton from "../components/CalButton";
+import { getHomepageContent, getGlobalSettings } from "../lib/cosmic";
+
+// Fetch content from Cosmic
+const homepageData = await getHomepageContent();
+const globalSettings = await getGlobalSettings();
+
+// Extract content with fallbacks
+const headline =
+    homepageData?.metadata?.headline ||
+    "Physical Therapist turned ADHD Coach helping parents and neurodiverse individuals thrive through brain-body strategies";
+const subhead =
+    homepageData?.metadata?.subhead ||
+    "With 25+ years of pediatric PT experience and ICF certification, I bridge the gap between brain science and practical daily strategies for ADHD and executive function challenges.";
+
+const servicesHeadline =
+    homepageData?.metadata?.services?.headline || "How I Can Help";
+const servicesDescription =
+    homepageData?.metadata?.services?.description ||
+    "Combining my physical therapy background with ADHD coaching expertise to provide comprehensive support for individuals and families.";
+
+const offering1 = homepageData?.metadata?.services?.["offering-1"]?.[0] || {
+    title: "For Parents & Families",
+    description:
+        "Supporting parents in understanding and advocating for their neurodiverse children, plus direct coaching for teens and family consulting.",
+};
+
+const offering2 = homepageData?.metadata?.services?.["offering-2"]?.[0] || {
+    title: "For Adults",
+    description:
+        "Individual ADHD and executive function coaching for adults looking to develop practical strategies and build sustainable systems.",
+};
+
+const offering3 = homepageData?.metadata?.services?.["offering-3"]?.[0] || {
+    title: "For Organizations",
+    description:
+        "Teacher training, classroom support, and presentations for parent groups to build understanding of neurodiverse learners.",
+};
+
+const journeyTitle =
+    homepageData?.metadata?.journey?.title ||
+    "My Journey from PT to ADHD Coach";
+const journeyDescription =
+    homepageData?.metadata?.journey?.description ||
+    "After 25+ years as a pediatric physical therapist specializing in brain-based rehabilitation, I discovered my true calling in ADHD coaching. My personal experience with ADHD, combined with my clinical expertise, gives me a unique perspective on the brain-body connection.\n\nAs a mother of triplet teenagers in Bergen County, I understand the daily challenges families face and the importance of practical, sustainable strategies.";
+
+// Extract calendar links with fallbacks
+const calendarLinks = {
+    consultation:
+        globalSettings?.metadata?.calendar_links?.free_consultation ||
+        "cindy-romanzo/consultation",
+    officeHours:
+        globalSettings?.metadata?.calendar_links?.office_hours ||
+        "cindy-romanzo/office-hours",
+};
+
+// Helper function to extract cal.com slug from full URL
+const getCalSlug = (url: string) => {
+    if (url.includes("cal.com/")) {
+        return url.split("cal.com/")[1];
+    }
+    return url;
+};
 ---
 
-<Layout
-    title="Home"
-    description="Physical Therapist turned ADHD Coach helping parents and neurodiverse individuals thrive through brain-body strategies"
->
+<Layout title="Home" description={headline}>
     <!-- Hero Section -->
     <section
         class="section-padding bg-gradient-to-b from-muted/30 to-background"
@@ -14,25 +74,22 @@ import Layout from "../layouts/Layout.astro";
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-48 items-center">
                 <div class="animate-fade-in">
                     <h1 class="mb-24">
-                        Physical Therapist turned ADHD Coach helping parents and
-                        neurodiverse individuals thrive through brain-body
-                        strategies
+                        {headline}
                     </h1>
                     <p
                         class="text-xl text-muted-foreground mb-32 leading-relaxed"
                     >
-                        With 25+ years of pediatric PT experience and ICF
-                        certification, I bridge the gap between brain science
-                        and practical daily strategies for ADHD and executive
-                        function challenges.
+                        {subhead}
                     </p>
                     <div class="flex flex-col sm:flex-row gap-16">
-                        <button
-                            class="btn-primary"
-                            data-cal-link="cindy-romanzo/office-hours"
+                        <CalButton
+                            calLink={getCalSlug(calendarLinks.officeHours)}
+                            className="btn-primary"
+                            namespace="hero-office-hours"
+                            client:load
                         >
                             Schedule Office Hours
-                        </button>
+                        </CalButton>
                         <a href="/services" class="btn-outline">
                             Learn About My Services
                         </a>
@@ -41,7 +98,7 @@ import Layout from "../layouts/Layout.astro";
 
                 <div class="relative">
                     <div
-                        class="aspect-square bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-8 overflow-hidden"
+                        class="aspect-square bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-8 overflow-hidden w-[76%] mx-auto"
                     >
                         <img
                             src="/images/logo.svg"
@@ -54,52 +111,56 @@ import Layout from "../layouts/Layout.astro";
         </div>
     </section>
 
-    <!-- Trust Indicators -->
+    <!-- Professional Badges -->
     <section class="py-48 bg-white">
         <div class="max-w-7xl mx-auto container-padding">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-24 text-center">
-                <div class="animate-fade-in">
-                    <div
-                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-16"
-                    >
-                        <span class="text-primary font-bold">ICF</span>
-                    </div>
-                    <p class="font-medium">Certified Coach</p>
-                    <p class="text-sm text-muted-foreground">ACC Credential</p>
+            <div
+                class="flex flex-wrap justify-center items-center gap-32 md:gap-48"
+            >
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/ACC.png"
+                        alt="ACC Credential"
+                        class="w-full h-auto object-contain"
+                    />
                 </div>
-
-                <div class="animate-fade-in">
-                    <div
-                        class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-16"
-                    >
-                        <span class="text-secondary font-bold">25+</span>
-                    </div>
-                    <p class="font-medium">Years Experience</p>
-                    <p class="text-sm text-muted-foreground">
-                        Physical Therapy
-                    </p>
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/ACO.png"
+                        alt="ACO Certification"
+                        class="w-full h-auto object-contain"
+                    />
                 </div>
-
-                <div class="animate-fade-in">
-                    <div
-                        class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-16"
-                    >
-                        <span class="text-primary font-bold">MPT</span>
-                    </div>
-                    <p class="font-medium">Licensed PT</p>
-                    <p class="text-sm text-muted-foreground">
-                        Brain-Body Expert
-                    </p>
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/ICF_Member.png"
+                        alt="ICF Member"
+                        class="w-full h-auto object-contain"
+                    />
                 </div>
-
-                <div class="animate-fade-in">
-                    <div
-                        class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-16"
-                    >
-                        <span class="text-secondary font-bold">CAS</span>
-                    </div>
-                    <p class="font-medium">ADHD Specialist</p>
-                    <p class="text-sm text-muted-foreground">Certified</p>
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/JST_Web_Graduate.png"
+                        alt="JST Web Graduate"
+                        class="w-full h-auto object-contain"
+                    />
+                </div>
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/cas.png"
+                        alt="CAS Certification"
+                        class="w-full h-auto object-contain"
+                    />
                 </div>
             </div>
         </div>
@@ -109,34 +170,31 @@ import Layout from "../layouts/Layout.astro";
     <section class="section-padding bg-muted/30">
         <div class="max-w-7xl mx-auto container-padding">
             <div class="text-center mb-64">
-                <h2 class="mb-24">How I Can Help</h2>
+                <h2 class="mb-24">{servicesHeadline}</h2>
                 <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-                    Combining my physical therapy background with ADHD coaching
-                    expertise to provide comprehensive support for individuals
-                    and families.
+                    {servicesDescription}
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-32">
                 <div
-                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300"
+                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
                 >
-                    <div class="p-32">
-                        <div
-                            class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24"
-                        >
-                            <span class="text-primary font-bold text-lg">P</span
-                            >
+                    <div class="p-32 flex flex-col flex-grow">
+                        <div class="mb-24">
+                            <img
+                                src="/images/illustrations/parents.png"
+                                alt="Parents & Families"
+                                class="w-full h-auto object-contain rounded-lg"
+                            />
                         </div>
-                        <h3 class="mb-16">For Parents & Families</h3>
-                        <p class="text-muted-foreground mb-24">
-                            Supporting parents in understanding and advocating
-                            for their neurodiverse children, plus direct
-                            coaching for teens and family consulting.
+                        <h3 class="mb-16">{offering1.title}</h3>
+                        <p class="text-muted-foreground mb-24 flex-grow">
+                            {offering1.description}
                         </p>
                         <a
                             href="/services"
-                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200 mt-auto"
                         >
                             Learn More
                         </a>
@@ -144,25 +202,23 @@ import Layout from "../layouts/Layout.astro";
                 </div>
 
                 <div
-                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300"
+                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
                 >
-                    <div class="p-32">
-                        <div
-                            class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-24"
-                        >
-                            <span class="text-secondary font-bold text-lg"
-                                >A</span
-                            >
+                    <div class="p-32 flex flex-col flex-grow">
+                        <div class="mb-24">
+                            <img
+                                src="/images/illustrations/adult.png"
+                                alt="Adults"
+                                class="w-full h-auto object-contain rounded-lg"
+                            />
                         </div>
-                        <h3 class="mb-16">For Adults</h3>
-                        <p class="text-muted-foreground mb-24">
-                            Individual ADHD and executive function coaching for
-                            adults looking to develop practical strategies and
-                            build sustainable systems.
+                        <h3 class="mb-16">{offering2.title}</h3>
+                        <p class="text-muted-foreground mb-24 flex-grow">
+                            {offering2.description}
                         </p>
                         <a
                             href="/services"
-                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200 mt-auto"
                         >
                             Learn More
                         </a>
@@ -170,24 +226,23 @@ import Layout from "../layouts/Layout.astro";
                 </div>
 
                 <div
-                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300"
+                    class="bg-card rounded-lg shadow-sm animate-fade-in hover:shadow-lg transition-shadow duration-300 flex flex-col h-full"
                 >
-                    <div class="p-32">
-                        <div
-                            class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24"
-                        >
-                            <span class="text-primary font-bold text-lg">O</span
-                            >
+                    <div class="p-32 flex flex-col flex-grow">
+                        <div class="mb-24">
+                            <img
+                                src="/images/illustrations/organizations.png"
+                                alt="Organizations"
+                                class="w-full h-auto object-contain rounded-lg"
+                            />
                         </div>
-                        <h3 class="mb-16">For Organizations</h3>
-                        <p class="text-muted-foreground mb-24">
-                            Teacher training, classroom support, and
-                            presentations for parent groups to build
-                            understanding of neurodiverse learners.
+                        <h3 class="mb-16">{offering3.title}</h3>
+                        <p class="text-muted-foreground mb-24 flex-grow">
+                            {offering3.description}
                         </p>
                         <a
                             href="/services"
-                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                            class="inline-block w-full text-center border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground px-6 py-3 rounded-lg font-medium transition-all duration-200 mt-auto"
                         >
                             Learn More
                         </a>
@@ -202,23 +257,16 @@ import Layout from "../layouts/Layout.astro";
         <div class="max-w-7xl mx-auto container-padding">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-48 items-center">
                 <div>
-                    <h2 class="mb-24">My Journey from PT to ADHD Coach</h2>
-                    <p
-                        class="text-lg text-muted-foreground mb-24 leading-relaxed"
-                    >
-                        After 25+ years as a pediatric physical therapist
-                        specializing in brain-based rehabilitation, I discovered
-                        my true calling in ADHD coaching. My personal experience
-                        with ADHD, combined with my clinical expertise, gives me
-                        a unique perspective on the brain-body connection.
-                    </p>
-                    <p
-                        class="text-lg text-muted-foreground mb-32 leading-relaxed"
-                    >
-                        As a mother of triplet teenagers in Bergen County, I
-                        understand the daily challenges families face and the
-                        importance of practical, sustainable strategies.
-                    </p>
+                    <h2 class="mb-24">{journeyTitle}</h2>
+                    {
+                        journeyDescription
+                            .split("\n\n")
+                            .map((paragraph: string) => (
+                                <p class="text-lg text-muted-foreground mb-24 leading-relaxed">
+                                    {paragraph}
+                                </p>
+                            ))
+                    }
                     <a href="/about" class="btn-primary">
                         Read My Full Story
                     </a>
@@ -229,38 +277,12 @@ import Layout from "../layouts/Layout.astro";
                         class="aspect-[4/3] bg-gradient-to-br from-secondary/10 to-primary/10 rounded-3xl p-6 overflow-hidden"
                     >
                         <img
-                            src="/images/2023-03-29  CIndy Romanzo Headshots_2_WEB.jpg"
+                            src="/images/2023-03-29_CIndy_Romanzo_Headshots_2_WEB.jpg"
                             alt="Cindy Romanzo - ADHD Coach and Physical Therapist"
                             class="w-full h-full object-cover rounded-2xl shadow-lg scale-[1.15] object-center"
                         />
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="section-padding bg-primary">
-        <div class="max-w-4xl mx-auto container-padding text-center">
-            <h2 class="text-white mb-24">Ready to Start Your Journey?</h2>
-            <p class="text-xl text-primary-foreground/90 mb-32">
-                Schedule a consultation to discuss how brain-body strategies can
-                transform your family's approach to ADHD and executive function
-                challenges.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-16 justify-center">
-                <button
-                    class="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
-                    data-cal-link="cindy-romanzo/consultation"
-                >
-                    Schedule Consultation
-                </button>
-                <button
-                    class="border-2 border-white text-white hover:bg-white hover:text-primary px-6 py-3 rounded-lg font-medium transition-all duration-200"
-                    data-cal-link="cindy-romanzo/office-hours"
-                >
-                    Schedule Office Hours
-                </button>
             </div>
         </div>
     </section>

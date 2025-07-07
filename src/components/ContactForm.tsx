@@ -16,10 +16,36 @@ const ContactForm = () => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      if (response.ok) {
+        alert('Message sent successfully!');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          interest: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -30,7 +56,7 @@ const ContactForm = () => {
     <Card>
       <CardContent className="p-32">
         <h3 className="mb-24">Send Me a Message</h3>
-        <form onSubmit={handleSubmit} className="space-y-24">
+        <form onSubmit={handleSubmit} className="space-y-24" data-cf-form="contact">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
               <label className="block text-sm font-medium mb-8">First Name</label>

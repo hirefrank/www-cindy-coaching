@@ -1,6 +1,22 @@
 
 name = "cindy-romanzo-coaching"
 compatibility_date = "2025-03-25"
+account_id = "1d881509c2679aa8b5023f278c2ea238"
+main = "functions/_worker.js"
+
+[observability]
+enabled = true
 
 [assets]
 directory = "./dist"
+
+# Email bindings for contact form
+[[send_email]]
+name = "EMAIL"
+
+# Environment variables (will be set in dashboard)
+[env.production.vars]
+CONTACT_EMAIL = "fcharris@gmail.com"
+
+[build]
+command = "npm run build"

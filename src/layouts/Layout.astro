@@ -1,5 +1,7 @@
 ---
 import MobileMenu from "../components/MobileMenu";
+import CalButton from "../components/CalButton";
+import { getFooterContent, getGlobalSettings } from "../lib/cosmic";
 
 export interface Props {
     title: string;
@@ -10,7 +12,7 @@ export interface Props {
 const {
     title,
     description = "ICF certified ADHD coach with 25+ years of Physical Therapy experience, specializing in brain-body strategies for neurodiverse individuals and families.",
-    ogImage = "/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg",
+    ogImage = "/images/2023-03-29_CIndy_Romanzo_Headshots_1_WEB.jpg",
 } = Astro.props;
 const currentPath = Astro.url.pathname;
 const canonicalURL = new URL(
@@ -19,6 +21,49 @@ const canonicalURL = new URL(
 );
 
 const isActive = (path: string) => currentPath === path;
+
+// Fetch footer content and global settings from Cosmic
+const footerData = await getFooterContent();
+const globalSettings = await getGlobalSettings();
+
+// Extract footer content with fallbacks
+const bannerCtaTitle =
+    footerData?.metadata?.banner_cta?.title || "Ready to Start Your Journey?";
+const bannerCtaDescription =
+    footerData?.metadata?.banner_cta?.description ||
+    "Schedule a consultation to discuss how brain-body strategies can transform your family's approach to ADHD and executive function challenges.";
+
+const footerName = footerData?.metadata?.short_bio?.name || "Cindy Romanzo";
+const footerAbout =
+    footerData?.metadata?.short_bio?.about ||
+    "ICF certified ADHD coach with 25+ years of Physical Therapy experience, specializing in brain-body strategies for neurodiverse individuals and families.";
+
+// Parse the credentials from the about text
+const aboutLines = footerAbout
+    .split("\n")
+    .filter((line: string) => line.trim());
+const bioText = aboutLines[0];
+const credentials = aboutLines.slice(1).filter((line: string) => line.trim());
+
+// Extract global settings with fallbacks
+const siteName = globalSettings?.metadata?.site_name || "Cindy Romanzo";
+const siteEmail = globalSettings?.metadata?.email || "cindy@mindfulbalanceadhdcoaching.com";
+const siteLocation = globalSettings?.metadata?.location || "Bergen County, NJ";
+
+// Extract calendar links with fallbacks
+const calendarLinks = {
+    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation",
+    officeHours: globalSettings?.metadata?.calendar_links?.office_hours || "cindy-romanzo/office-hours",
+    alliedProfessional: globalSettings?.metadata?.calendar_links?.allied_professional || "cindy-romanzo/networking"
+};
+
+// Helper function to extract cal.com slug from full URL
+const getCalSlug = (url: string) => {
+    if (url.includes('cal.com/')) {
+        return url.split('cal.com/')[1];
+    }
+    return url;
+};
 ---
 
 <!doctype html>
@@ -29,7 +74,7 @@ const isActive = (path: string) => currentPath === path;
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
-        <title>{title} - Cindy Romanzo</title>
+        <title>{title} - {siteName}</title>
 
         <!-- Canonical URL -->
         <link rel="canonical" href={canonicalURL} />
@@ -37,14 +82,14 @@ const isActive = (path: string) => currentPath === path;
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
         <meta property="og:url" content={canonicalURL} />
-        <meta property="og:title" content={`${title} - Cindy Romanzo`} />
+        <meta property="og:title" content={`${title} - ${siteName}`} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content={new URL(ogImage, canonicalURL)} />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content={canonicalURL} />
-        <meta property="twitter:title" content={`${title} - Cindy Romanzo`} />
+        <meta property="twitter:title" content={`${title} - ${siteName}`} />
         <meta property="twitter:description" content={description} />
         <meta
             property="twitter:image"
@@ -52,7 +97,7 @@ const isActive = (path: string) => currentPath === path;
         />
 
         <!-- Additional SEO -->
-        <meta name="author" content="Cindy Romanzo" />
+        <meta name="author" content={siteName} />
         <meta
             name="keywords"
             content="ADHD coach, executive function coach, neurodiverse support, Bergen County NJ, parent coaching, teen ADHD coaching, brain-body strategies"
@@ -60,13 +105,10 @@ const isActive = (path: string) => currentPath === path;
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            href="https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap"
             rel="stylesheet"
         />
 
-        <!-- Cal.com Embed -->
-        <script is:inline async src="https://app.cal.com/embed/embed.js"
-        ></script>
 
         <!-- Google Analytics -->
         <script
@@ -88,7 +130,7 @@ const isActive = (path: string) => currentPath === path;
             {
                 "@context": "https://schema.org",
                 "@type": "LocalBusiness",
-                "name": "Cindy Romanzo ADHD Coaching",
+                "name": `${siteName} ADHD Coaching`,
                 "description": "ICF certified ADHD coach specializing in brain-body strategies for neurodiverse individuals and families",
                 "url": "https://mindfulbalanceadhdcoaching.com",
                 "telephone": "",
@@ -101,7 +143,7 @@ const isActive = (path: string) => currentPath === path;
                 },
                 "priceRange": "$$",
                 "openingHours": "Mo-Fr 09:00-17:00",
-                "image": "https://mindfulbalanceadhdcoaching.com/images/2023-03-29  CIndy Romanzo Headshots_1_WEB.jpg",
+                "image": "https://mindfulbalanceadhdcoaching.com/images/2023-03-29_CIndy_Romanzo_Headshots_1_WEB.jpg",
                 "sameAs": []
             }
         </script>
@@ -118,7 +160,7 @@ const isActive = (path: string) => currentPath === path;
                             href="/"
                             class="text-xl font-semibold text-foreground hover:text-primary transition-colors"
                         >
-                            Cindy Romanzo
+                            {siteName}
                         </a>
 
                         <div class="hidden md:flex items-center gap-10">
@@ -162,12 +204,14 @@ const isActive = (path: string) => currentPath === path;
                             >
                                 Contact
                             </a>
-                            <button
-                                class="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-lg font-medium text-base transition-all duration-200 hover:scale-105 ml-2"
-                                data-cal-link="cindy-romanzo/consultation"
+                            <CalButton 
+                                calLink={getCalSlug(calendarLinks.consultation)}
+                                className="bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-2.5 rounded-lg font-medium text-base transition-all duration-200 hover:scale-105 ml-2"
+                                namespace="consultation"
+                                client:load
                             >
                                 Schedule Consultation
-                            </button>
+                            </CalButton>
                         </div>
 
                         <!-- Mobile menu -->
@@ -181,69 +225,94 @@ const isActive = (path: string) => currentPath === path;
                 <slot />
             </main>
 
+            <!-- CTA Section -->
+            <section class="section-padding bg-primary">
+                <div class="max-w-4xl mx-auto container-padding text-center">
+                    <h2 class="text-white mb-24">{bannerCtaTitle}</h2>
+                    <p class="text-xl text-primary-foreground/90 mb-32">
+                        {bannerCtaDescription}
+                    </p>
+                    <div
+                        class="flex flex-col sm:flex-row gap-16 justify-center"
+                    >
+                        <CalButton
+                            calLink={getCalSlug(calendarLinks.consultation)}
+                            className="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-lg font-medium transition-all duration-200 hover:scale-105"
+                            namespace="cta-consultation"
+                            client:load
+                        >
+                            Schedule Consultation
+                        </CalButton>
+                        <CalButton
+                            calLink={getCalSlug(calendarLinks.officeHours)}
+                            className="border-2 border-white text-white hover:bg-white hover:text-primary px-6 py-3 rounded-lg font-medium transition-all duration-200"
+                            namespace="cta-office-hours"
+                            client:load
+                        >
+                            Schedule Office Hours
+                        </CalButton>
+                    </div>
+                </div>
+            </section>
+
             <!-- Footer -->
             <footer class="bg-muted/50 border-t border-border">
                 <div class="max-w-7xl mx-auto container-padding py-32">
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-24">
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-24">
                         <div class="md:col-span-2">
                             <h3 class="text-xl font-semibold mb-16">
-                                Cindy Romanzo
+                                {siteName}
                             </h3>
                             <p class="text-muted-foreground mb-16 max-w-md">
-                                ICF certified ADHD coach with 25+ years of
-                                Physical Therapy experience, specializing in
-                                brain-body strategies for neurodiverse
-                                individuals and families.
+                                {bioText}
                             </p>
                             <div class="text-sm text-muted-foreground">
-                                <p>ICF Associate Certified Coach (ACC)</p>
-                                <p>Licensed Physical Therapist (MPT)</p>
-                                <p>Certified ADHD Specialist (CAS)</p>
+                                {
+                                    credentials.map((credential: string) => (
+                                        <p>{credential}</p>
+                                    ))
+                                }
                             </div>
                         </div>
 
-                        <div>
-                            <h4 class="font-medium mb-16">Quick Links</h4>
-                            <div class="space-y-8 text-sm">
-                                <a
-                                    href="/about"
-                                    class="block text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                    About
-                                </a>
-                                <a
-                                    href="/services"
-                                    class="block text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                    Services
-                                </a>
-                                <a
-                                    href="/resources"
-                                    class="block text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                    Resources
-                                </a>
-                                <a
-                                    href="/contact"
-                                    class="block text-muted-foreground hover:text-primary transition-colors"
-                                >
-                                    Contact
-                                </a>
-                            </div>
-                        </div>
-
-                        <div>
-                            <h4 class="font-medium mb-16">Contact</h4>
-                            <div
-                                class="space-y-8 text-sm text-muted-foreground"
-                            >
-                                <p>Bergen County, NJ</p>
-                                <button
-                                    class="btn-primary mt-16"
-                                    data-cal-link="cindy-romanzo/office-hours"
-                                >
-                                    Schedule Office Hours
-                                </button>
+                        <div class="md:col-span-3">
+                            <h4 class="font-medium mb-16">Professional Credentials</h4>
+                            <div class="flex flex-wrap gap-16">
+                                <img
+                                    src="/images/badges/ACC.png"
+                                    alt="ACC Credential"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/ACO.png"
+                                    alt="ACO Certification"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/ICF_Member.png"
+                                    alt="ICF Member"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/JST_Web_Graduate.png"
+                                    alt="JST Web Graduate"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/cas.png"
+                                    alt="CAS Certification"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/LDN631.png"
+                                    alt="LDN631 Certification"
+                                    class="w-[80px] h-auto object-contain"
+                                />
+                                <img
+                                    src="/images/badges/LDN633.png"
+                                    alt="LDN633 Certification"
+                                    class="w-[80px] h-auto object-contain"
+                                />
                             </div>
                         </div>
                     </div>
@@ -252,7 +321,7 @@ const isActive = (path: string) => currentPath === path;
                         class="border-t border-border mt-32 pt-24 text-center text-sm text-muted-foreground"
                     >
                         <p>
-                            &copy; {new Date().getFullYear()} Cindy Romanzo. All
+                            &copy; {new Date().getFullYear()} {siteName}. All
                             rights reserved.
                         </p>
                     </div>
@@ -260,46 +329,6 @@ const isActive = (path: string) => currentPath === path;
             </footer>
         </div>
 
-        <!-- Cal.com popup initialization -->
-        <script is:inline>
-            (function () {
-                // Wait for Cal to be available
-                function initCal() {
-                    if (window.Cal) {
-                        window.Cal("init", {
-                            origin: "https://cal.com",
-                        });
-
-                        // Initialize all Cal.com buttons
-                        document
-                            .querySelectorAll("[data-cal-link]")
-                            .forEach((button) => {
-                                const calLink =
-                                    button.getAttribute("data-cal-link");
-                                button.addEventListener("click", (e) => {
-                                    e.preventDefault();
-                                    window.Cal("openModal", {
-                                        calLink: calLink,
-                                        config: {
-                                            theme: "light",
-                                        },
-                                    });
-                                });
-                            });
-                    } else {
-                        // Retry if Cal is not yet loaded
-                        setTimeout(initCal, 100);
-                    }
-                }
-
-                // Initialize when DOM is ready
-                if (document.readyState === "loading") {
-                    document.addEventListener("DOMContentLoaded", initCal);
-                } else {
-                    initCal();
-                }
-            })();
-        </script>
     </body>
 </html>
 

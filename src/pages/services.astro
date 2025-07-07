@@ -1,5 +1,24 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import CalButton from '../components/CalButton';
+import { getGlobalSettings } from '../lib/cosmic';
+
+// Fetch global settings from Cosmic
+const globalSettings = await getGlobalSettings();
+
+// Extract calendar links with fallbacks
+const calendarLinks = {
+    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation",
+    officeHours: globalSettings?.metadata?.calendar_links?.office_hours || "cindy-romanzo/office-hours"
+};
+
+// Helper function to extract cal.com slug from full URL
+const getCalSlug = (url: string) => {
+    if (url.includes('cal.com/')) {
+        return url.split('cal.com/')[1];
+    }
+    return url;
+};
 ---
 
 <Layout title="Services - Cindy Coaching">
@@ -44,9 +63,14 @@ import Layout from '../layouts/Layout.astro';
               <p>• School advocacy and IEP support</p>
             </div>
             <p class="text-sm font-medium mb-24">Ongoing coaching relationships</p>
-            <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.consultation)}
+              className="btn-primary w-full"
+              namespace="services-consultation"
+              client:load
+            >
               Schedule Consultation
-            </button>
+            </CalButton>
           </div>
         </div>
         
@@ -68,9 +92,14 @@ import Layout from '../layouts/Layout.astro';
               <p>• College and career preparation</p>
             </div>
             <p class="text-sm font-medium mb-24">Weekly sessions</p>
-            <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.consultation)}
+              className="btn-primary w-full"
+              namespace="services-consultation"
+              client:load
+            >
               Schedule Consultation
-            </button>
+            </CalButton>
           </div>
         </div>
         
@@ -92,9 +121,14 @@ import Layout from '../layouts/Layout.astro';
               <p>• Crisis intervention and planning</p>
             </div>
             <p class="text-sm font-medium mb-24">Project-based or ongoing</p>
-            <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.consultation)}
+              className="btn-primary w-full"
+              namespace="services-consultation"
+              client:load
+            >
               Schedule Consultation
-            </button>
+            </CalButton>
           </div>
         </div>
       </div>
@@ -125,9 +159,14 @@ import Layout from '../layouts/Layout.astro';
                   One-on-one coaching for adults with ADHD and executive function challenges. 
                   Develop personalized strategies that work with your unique brain and lifestyle.
                 </p>
-                <button class="btn-primary" data-cal-link="cindy-romanzo/consultation">
+                <CalButton 
+                  calLink={getCalSlug(calendarLinks.consultation)}
+                  className="btn-primary"
+                  namespace="adult-consultation"
+                  client:load
+                >
                   Schedule Consultation
-                </button>
+                </CalButton>
               </div>
               
               <div>
@@ -199,9 +238,14 @@ import Layout from '../layouts/Layout.astro';
               <p>• Behavior intervention planning</p>
             </div>
             <p class="text-sm font-medium mb-24">Workshops, presentations, ongoing consultation</p>
-            <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.consultation)}
+              className="btn-primary w-full"
+              namespace="services-consultation"
+              client:load
+            >
               Schedule Consultation
-            </button>
+            </CalButton>
           </div>
         </div>
         
@@ -222,9 +266,14 @@ import Layout from '../layouts/Layout.astro';
               <p>• Building resilience in children</p>
             </div>
             <p class="text-sm font-medium mb-24">1-2 hour presentations with Q&A</p>
-            <button class="btn-primary w-full" data-cal-link="cindy-romanzo/consultation">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.consultation)}
+              className="btn-primary w-full"
+              namespace="services-consultation"
+              client:load
+            >
               Schedule Consultation
-            </button>
+            </CalButton>
           </div>
         </div>
         
@@ -245,31 +294,18 @@ import Layout from '../layouts/Layout.astro';
               <p>• Introductory conversations</p>
             </div>
             <p class="text-sm font-medium mb-24">15-30 minute informal sessions</p>
-            <button class="btn-secondary w-full" data-cal-link="cindy-romanzo/office-hours">
+            <CalButton 
+              calLink={getCalSlug(calendarLinks.officeHours)}
+              className="btn-secondary w-full"
+              namespace="office-hours"
+              client:load
+            >
               Schedule Office Hours
-            </button>
+            </CalButton>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA Section -->
-  <section class="section-padding bg-primary">
-    <div class="max-w-4xl mx-auto container-padding text-center">
-      <h2 class="text-white mb-24">Ready to Get Started?</h2>
-      <p class="text-xl text-primary-foreground/90 mb-32">
-        Every journey begins with a conversation. Let's discuss how my brain-body approach 
-        to ADHD coaching can support your unique goals and challenges.
-      </p>
-      <div class="flex flex-col sm:flex-row gap-16 justify-center">
-        <button class="bg-white text-primary hover:bg-white/90 btn" data-cal-link="cindy-romanzo/consultation">
-          Schedule Consultation
-        </button>
-        <button class="btn-outline border-white text-white hover:bg-white hover:text-primary" data-cal-link="cindy-romanzo/office-hours">
-          Schedule Office Hours
-        </button>
-      </div>
-    </div>
-  </section>
 </Layout>
