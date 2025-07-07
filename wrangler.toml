@@ -13,10 +13,11 @@ directory = "./dist"
 # Email bindings for contact form
 [[send_email]]
 name = "EMAIL"
+destination_address = "cindy@cindyromanzo.com"
 
 # Environment variables (will be set in dashboard)
 [env.production.vars]
-CONTACT_EMAIL = "fcharris@gmail.com"
+CONTACT_EMAIL = "cindy@cindyromanzo.com"
 
 [build]
 command = "npm run build"

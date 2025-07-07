@@ -54,15 +54,20 @@ IP Address: ${request.headers.get('CF-Connecting-IP') || 'Unknown'}
 
     // Send email using Cloudflare Email Workers
     try {
-      await env.EMAIL.send({
-        from: `noreply@mindfulbalanceadhdcoaching.com`,
-        to: env.CONTACT_EMAIL || 'cindy@cindyromanzo.com',
-        subject: `Contact Form: ${subject}`,
-        text: emailContent,
-        headers: {
-          'Reply-To': email,
-        },
-      });
+      const { EmailMessage } = await import("cloudflare:email");
+      
+      const emailMessage = new EmailMessage(
+        "noreply@mindfulbalanceadhdcoaching.com",
+        env.CONTACT_EMAIL || "cindy@cindyromanzo.com",
+        `From: Contact Form <noreply@mindfulbalanceadhdcoaching.com>
+To: ${env.CONTACT_EMAIL || "cindy@cindyromanzo.com"}
+Reply-To: ${email}
+Subject: Contact Form: ${subject}
+
+${emailContent}`
+      );
+
+      await env.EMAIL.send(emailMessage);
     } catch (emailError) {
       console.error('Email sending failed:', emailError);
       
