@@ -8,6 +8,9 @@ send_email = [
     {name = "CONTACT_EMAIL", allowed_destination_addresses = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"]}
 ]
 
+[observability]
+enabled = true
+
 [[routes]]
 pattern = "mindfulbalanceadhdcoaching.com/api/contact"
 zone_name = "mindfulbalanceadhdcoaching.com"
