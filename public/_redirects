@@ -9,4 +9,4 @@
 /book-session /contact 301
 
 # Admin
-/admin https://app.cosmicjs.com/cindy-production/dashboard 200
+/admin https://app.cosmicjs.com/cindy-production/dashboard 301
