@@ -21,7 +21,7 @@ Cynthia (Cindy) Romanzo is an ICF certified ADHD coach with a unique background 
 - **Framework**: Astro (static site generator)
 - **Hosting**: Cloudflare Workers
 - **Scheduling**: Cal.com with popup widgets
-- **CMS**: Sanity (free tier for public content)
+- **CMS**: Cosmic JS
 - **Domain**: cindyromanzo.com (pending client confirmation)
 
 ### Template Selection
@@ -259,7 +259,7 @@ Based on reference sites (hirefrank.com, adhdcollegesolutions.com, tuckmanpsych.
 - **Availability**: Flexible scheduling
 - **Integration**: Services page and other strategic locations
 
-## Sanity CMS Configuration
+## CMS Configuration
 
 ### Content Types
 1. **Blog Posts** (detailed schema above)
@@ -305,7 +305,7 @@ Based on reference sites (hirefrank.com, adhdcollegesolutions.com, tuckmanpsych.
 - [ ] Initial content population
 
 ### Phase 2: CMS Integration
-- [ ] Sanity CMS setup and configuration
+- [ ] CMS setup and configuration
 - [ ] Blog functionality implementation
 - [ ] Content schema creation
 - [ ] Blog template development
@@ -334,7 +334,7 @@ Based on reference sites (hirefrank.com, adhdcollegesolutions.com, tuckmanpsych.
 ### Developer Deliverables
 - [ ] Responsive website matching specifications
 - [ ] Cal.com integration with popup functionality
-- [ ] Sanity CMS setup with content editing capabilities
+- [ ] CMS setup with content editing capabilities
 - [ ] Documentation for content management
 - [ ] Basic SEO optimization
 - [ ] Performance optimization
@@ -364,20 +364,20 @@ Based on reference sites (hirefrank.com, adhdcollegesolutions.com, tuckmanpsych.
 ### Development Costs
 - Template customization and setup
 - Cal.com integration
-- Sanity CMS configuration
+- CMS configuration
 - Content migration and setup
 - Testing and optimization
 
 ### Ongoing Costs
 - Domain registration: ~$15/year
 - Cloudflare Workers: Free tier initially
-- Sanity CMS: Free tier (sufficient for current needs)
+- Cosmic JS: Free tier (sufficient for current needs)
 - Cal.com: Free tier initially
 
 ## Post-Launch Considerations
 
 ### Maintenance
-- Regular content updates via Sanity CMS
+- Regular content updates via CMS
 - Cal.com availability management
 - Analytics monitoring
 - Performance monitoring
