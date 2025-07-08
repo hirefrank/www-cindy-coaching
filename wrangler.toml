@@ -1,11 +1,12 @@
 
-name = "mindful-balance-adhd-coaching"
+# Cloudflare Pages configuration for mindful-balance-website
+name = "mindful-balance-website"
 compatibility_date = "2025-03-25"
 account_id = "1d881509c2679aa8b5023f278c2ea238"
-main = "dist/worker.js"
+
+[build]
+command = "npm run build"
+publish = "dist"
 
 [observability]
 enabled = true
-
-[assets]
-directory = "./dist"

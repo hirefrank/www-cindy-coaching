@@ -33,7 +33,7 @@ const bannerCtaDescription =
     footerData?.metadata?.banner_cta?.description ||
     "Schedule a consultation to discuss how brain-body strategies can transform your family's approach to ADHD and executive function challenges.";
 
-const footerName = footerData?.metadata?.short_bio?.name || "Cindy Romanzo";
+const footerName = footerData?.metadata?.short_bio?.name || siteName;
 const footerAbout =
     footerData?.metadata?.short_bio?.about ||
     "ICF certified ADHD coach with 25+ years of Physical Therapy experience, specializing in brain-body strategies for neurodiverse individuals and families.";
@@ -261,7 +261,7 @@ const getCalSlug = (url: string) => {
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-24">
                         <div class="md:col-span-2">
                             <h3 class="text-xl font-semibold mb-16">
-                                {siteName}
+                                {footerName}
                             </h3>
                             <p class="text-muted-foreground mb-16 max-w-md">
                                 {bioText}

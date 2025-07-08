@@ -1,15 +1,23 @@
-// Simple Cloudflare Worker for contact form
+// Contact form worker for Cindy Coaching
 export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    
-    // Handle contact form API endpoint
-    if (url.pathname === '/api/contact' && request.method === 'POST') {
-      return handleContactForm(request);
+  async fetch(request, env, ctx) {
+    // Handle CORS preflight requests
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
     }
-    
-    // For all other requests, serve static assets
-    return env.ASSETS.fetch(request);
+
+    // Only handle POST requests to /api/contact
+    if (request.method !== 'POST') {
+      return new Response('Method not allowed', { status: 405 });
+    }
+
+    return handleContactForm(request);
   },
 };
 
@@ -73,16 +81,4 @@ async function handleContactForm(request) {
       }
     );
   }
-}
-
-// Handle preflight requests
-export async function onRequestOptions() {
-  return new Response(null, {
-    status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    },
-  });
 }

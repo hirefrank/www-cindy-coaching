@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "deploy": "npm run build && wrangler deploy",
-    "deploy:preview": "npm run build && wrangler deploy --env preview"
+    "deploy:preview": "npm run build && wrangler deploy --env preview",
+    "deploy:worker": "cd workers/contact-form && npm run deploy"
   },
   "dependencies": {
     "@astrojs/check": "^0.7.0",

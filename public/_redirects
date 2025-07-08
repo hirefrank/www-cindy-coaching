@@ -1,0 +1,12 @@
+# Redirects for Mindful Balance ADHD Coaching website
+
+# Contact form API to worker
+/api/contact https://mindful-balance-contact-form.your-subdomain.workers.dev/ 200
+
+# Common redirects
+/home / 301
+/coaching /services 301
+/book-session /contact 301
+
+# Admin
+/admin https://app.cosmicjs.com/cindy-production/dashboard 200

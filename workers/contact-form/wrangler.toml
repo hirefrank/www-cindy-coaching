@@ -1,0 +1,12 @@
+name = "mindful-balance-contact-form"
+main = "src/index.js"
+compatibility_date = "2025-03-25"
+account_id = "1d881509c2679aa8b5023f278c2ea238"
+
+[[routes]]
+pattern = "mindfulbalanceadhdcoaching.com/api/contact"
+zone_name = "mindfulbalanceadhdcoaching.com"
+
+[[routes]]
+pattern = "www.mindfulbalanceadhdcoaching.com/api/contact"
+zone_name = "mindfulbalanceadhdcoaching.com"
