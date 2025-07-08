@@ -2,7 +2,7 @@
 import { EmailMessage } from "cloudflare:email";
 
 export default {
-  async fetch(request, env, ctx) {
+  async fetch(request, env) {
     // Handle CORS preflight requests
     if (request.method === 'OPTIONS') {
       return new Response(null, {
