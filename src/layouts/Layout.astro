@@ -26,7 +26,11 @@ const isActive = (path: string) => currentPath === path;
 const footerData = await getFooterContent();
 const globalSettings = await getGlobalSettings();
 
-// Extract footer content with fallbacks
+// Extract global settings with fallbacks
+const siteName = globalSettings?.metadata?.site_name || "Mindful Balance ADHD Coaching";
+const siteEmail = globalSettings?.metadata?.email || "cindy@mindfulbalanceadhdcoaching.com";
+const siteLocation = globalSettings?.metadata?.location || "Bergen County, NJ";
+
 const bannerCtaTitle =
     footerData?.metadata?.banner_cta?.title || "Ready to Start Your Journey?";
 const bannerCtaDescription =
@@ -44,11 +48,6 @@ const aboutLines = footerAbout
     .filter((line: string) => line.trim());
 const bioText = aboutLines[0];
 const credentials = aboutLines.slice(1).filter((line: string) => line.trim());
-
-// Extract global settings with fallbacks
-const siteName = globalSettings?.metadata?.site_name || "Mindful Balance ADHD Coaching";
-const siteEmail = globalSettings?.metadata?.email || "cindy@mindfulbalanceadhdcoaching.com";
-const siteLocation = globalSettings?.metadata?.location || "Bergen County, NJ";
 
 // Extract calendar links with fallbacks
 const calendarLinks = {
