@@ -1,4 +1,6 @@
 // Contact form worker for Cindy Coaching
+import { EmailMessage } from "cloudflare:email";
+
 export default {
   async fetch(request, env, ctx) {
     // Handle CORS preflight requests
@@ -17,11 +19,11 @@ export default {
       return new Response('Method not allowed', { status: 405 });
     }
 
-    return handleContactForm(request);
+    return handleContactForm(request, env);
   },
 };
 
-async function handleContactForm(request) {
+async function handleContactForm(request, env) {
   try {
     // Parse the form data
     const formData = await request.json();
@@ -53,7 +55,35 @@ async function handleContactForm(request) {
       timestamp: new Date().toISOString(),
     });
 
-    // For now, just return success
+    // Send email notification
+    try {
+      const emailContent = `
+New Contact Form Submission
+
+Name: ${firstName} ${lastName}
+Email: ${email}
+Phone: ${formData.phone || 'Not provided'}
+Interest: ${formData.interest || 'Not specified'}
+Subject: ${subject}
+
+Message:
+${message}
+
+Submitted: ${new Date().toISOString()}
+      `.trim();
+
+      const emailMessage = new EmailMessage(
+        "contact@mindfulbalanceadhdcoaching.com", // sender (must be from your domain)
+        "cindy@mindfulbalanceadhdcoaching.com",   // recipient
+        `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
+      );
+
+      await env.CONTACT_EMAIL.send(emailMessage);
+      console.log('✅ Email sent successfully');
+    } catch (emailError) {
+      console.error('❌ Failed to send email:', emailError);
+      // Continue anyway - form submission still logged
+    }
     return new Response(
       JSON.stringify({ 
         success: true, 
