@@ -15,7 +15,7 @@ const siteName = globalSettings?.metadata?.site_name || "Mindful Balance ADHD Co
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <title>Coming Soon - {siteName}</title>
         <script src="https://cdn.tailwindcss.com"></script>
-        <script>
+        <script is:inline>
             tailwind.config = {
                 theme: {
                     extend: {
