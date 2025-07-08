@@ -1,11 +1,3 @@
-# Ignore parent project files
-../../*
-../../tsconfig.json
-../../astro.config.mjs
-../../tailwind.config.mjs
-../../package.json
-../../pnpm-lock.yaml
-../../node_modules/
-../../src/
-../../public/
-../../dist/
+# Keep worker builds clean
+node_modules/
+.env*
