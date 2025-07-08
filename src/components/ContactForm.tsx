@@ -5,16 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-interface ServiceOption {
-  value: string;
-  label: string;
-}
-
-interface ContactFormProps {
-  serviceOptions?: ServiceOption[];
-}
-
-const ContactForm = ({ serviceOptions = [] }: ContactFormProps) => {
+const ContactForm = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -25,10 +16,38 @@ const ContactForm = ({ serviceOptions = [] }: ContactFormProps) => {
     message: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic here
-    console.log('Form submitted:', formData);
+    
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        alert(result.message || 'Message sent successfully!');
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          phone: '',
+          interest: '',
+          subject: '',
+          message: ''
+        });
+      } else {
+        alert(result.error || 'Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    }
   };
 
   const handleChange = (field: string, value: string) => {
@@ -39,7 +58,7 @@ const ContactForm = ({ serviceOptions = [] }: ContactFormProps) => {
     <Card>
       <CardContent className="p-32">
         <h3 className="mb-24">Send Me a Message</h3>
-        <form onSubmit={handleSubmit} className="space-y-24">
+        <form onSubmit={handleSubmit} className="space-y-24" data-cf-form="contact">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
               <label className="block text-sm font-medium mb-8">First Name</label>
@@ -89,22 +108,14 @@ const ContactForm = ({ serviceOptions = [] }: ContactFormProps) => {
                 <SelectValue placeholder="Select a service" />
               </SelectTrigger>
               <SelectContent>
-                {serviceOptions.length > 0 ? (
-                  serviceOptions.map((option) => (
-                    <SelectItem key={option.value} value={option.value}>
-                      {option.label}
-                    </SelectItem>
-                  ))
-                ) : (
-                  <>
-                    <SelectItem value="parent-coaching">Parent Coaching</SelectItem>
-                    <SelectItem value="teen-coaching">Teen Coaching</SelectItem>
-                    <SelectItem value="family-consulting">Family Consulting</SelectItem>
-                    <SelectItem value="school-support">School Support</SelectItem>
-                    <SelectItem value="workshops">Workshops & Training</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </>
-                )}
+                <SelectItem value="parent-coaching">Parent Coaching</SelectItem>
+                <SelectItem value="teen-coaching">Individual Coaching for Teens</SelectItem>
+                <SelectItem value="family-consulting">Family Consulting</SelectItem>
+                <SelectItem value="adult-coaching">Adult ADHD Coaching</SelectItem>
+                <SelectItem value="teacher-training">Teacher Training</SelectItem>
+                <SelectItem value="presentations">Parent Group Presentations</SelectItem>
+                <SelectItem value="office-hours">Professional Office Hours</SelectItem>
+                <SelectItem value="general">General Inquiry</SelectItem>
               </SelectContent>
             </Select>
           </div>

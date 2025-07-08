@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface MobileMenuProps {
   currentPath: string;
-  navigation?: Array<{title: string; link: string}>;
-  buttons?: {
-    scheduleConsultation?: string;
-    scheduleOfficeHours?: string;
-  };
 }
 
-export default function MobileMenu({ currentPath, navigation, buttons }: MobileMenuProps) {
+export default function MobileMenu({ currentPath }: MobileMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   const isActive = (path: string) => currentPath === path;
 
-  const navItems = navigation?.map(item => ({
-    href: item.link,
-    label: item.title
-  })) || [
+  const navItems = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
@@ -25,27 +17,13 @@ export default function MobileMenu({ currentPath, navigation, buttons }: MobileM
     { href: '/contact', label: 'Contact' },
   ];
 
-  // Prevent body scroll when menu is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [isOpen]);
-
   return (
     <>
       {/* Mobile menu button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors relative z-50"
+        className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
         aria-label="Toggle menu"
-        aria-expanded={isOpen}
       >
         <svg
           className="w-6 h-6"
@@ -65,75 +43,53 @@ export default function MobileMenu({ currentPath, navigation, buttons }: MobileM
       </button>
 
       {/* Mobile menu overlay */}
-      <div 
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-      >
-        {/* Background overlay */}
-        <div 
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
-          onClick={() => setIsOpen(false)}
-          aria-hidden="true"
-        />
-        
-        {/* Menu panel */}
-        <nav 
-          className={`fixed top-0 right-0 bg-white h-full w-64 shadow-2xl transform transition-transform duration-300 ease-out border-l border-border ${
-            isOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex items-center justify-between p-4 border-b">
-            <span className="text-lg font-semibold">Menu</span>
-            <button
-              onClick={() => setIsOpen(false)}
-              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              aria-label="Close menu"
-            >
-              <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
-                <path d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-          </div>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 md:hidden">
+          <div className="fixed inset-0 bg-black/20" onClick={() => setIsOpen(false)} />
           
-          <div className="p-4 overflow-y-auto h-[calc(100%-73px)]">
-            <div className="space-y-1">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
-                    isActive(item.href)
-                      ? 'bg-primary text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
+          <nav className="relative bg-background h-full w-64 shadow-xl">
+            <div className="flex items-center justify-between p-4 border-b">
+              <span className="text-lg font-semibold">Menu</span>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="p-2 rounded-lg hover:bg-muted transition-colors"
+                aria-label="Close menu"
+              >
+                <svg className="w-5 h-5" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                  <path d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
             
-            <div className="mt-6 space-y-3">
-              <button 
-                className="w-full btn-primary" 
-                data-cal-link="mindfulbalance/consultation"
-                onClick={() => setIsOpen(false)}
-              >
-                {buttons?.scheduleConsultation || 'Schedule Consultation'}
-              </button>
-              <button 
-                className="w-full btn-secondary" 
-                data-cal-link="mindfulbalance/office-hours"
-                onClick={() => setIsOpen(false)}
-              >
-                {buttons?.scheduleOfficeHours || 'Schedule Office Hours'}
-              </button>
+            <div className="p-4">
+              <div className="space-y-1">
+                {navItems.map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className={`block px-4 py-3 rounded-lg font-medium transition-colors ${
+                      isActive(item.href)
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-foreground hover:bg-muted'
+                    }`}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+              
+              <div className="mt-6 space-y-3">
+                <button className="w-full btn-primary" data-cal-link="cindy-romanzo/consultation">
+                  Schedule Consultation
+                </button>
+                <button className="w-full btn-secondary" data-cal-link="cindy-romanzo/office-hours">
+                  Schedule Office Hours
+                </button>
+              </div>
             </div>
-          </div>
-        </nav>
-      </div>
+          </nav>
+        </div>
+      )}
     </>
   );
 }

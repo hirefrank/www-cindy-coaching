@@ -1,18 +1,11 @@
 
 name = "mindful-balance-adhd-coaching"
 compatibility_date = "2025-03-25"
+account_id = "1d881509c2679aa8b5023f278c2ea238"
+main = "dist/worker.js"
 
-# Enable observability/logging
 [observability]
 enabled = true
-
-# Environment variables
-[env.production.vars]
-PUBLIC_SANITY_PROJECT_ID = "y67p94j5"
-
-# For all environments (including local dev)
-[vars]
-PUBLIC_SANITY_PROJECT_ID = "y67p94j5"
 
 [assets]
 directory = "./dist"

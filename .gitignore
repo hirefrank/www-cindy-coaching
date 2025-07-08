@@ -23,13 +23,6 @@ pnpm-debug.log*
 # editor directories
 .vscode/
 .idea/
-.env
-.env.local
-.env.production
-website-copy-backup.json
-website-copy.csv
-website-copy-edited.csv
-node_modules/
-dist/
-.astro/
+
+# Cloudflare
 .wrangler/
