@@ -1,5 +1,8 @@
 # Redirects for Mindful Balance ADHD Coaching website
 
+# Contact form API - redirect to worker subdomain for Pages deployments
+/api/contact https://mindful-balance-contact-form.1d881509c2679aa8b5023f278c2ea238.workers.dev/ 200
+
 # Common redirects
 /home / 301
 /coaching /services 301

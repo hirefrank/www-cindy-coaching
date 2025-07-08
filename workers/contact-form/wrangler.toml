@@ -8,10 +8,6 @@ send_email = [
 ]
 
 [[routes]]
-pattern = "www-cindy-coaching.pages.dev/api/contact"
-zone_name = "pages.dev"
-
-[[routes]]
 pattern = "mindfulbalanceadhdcoaching.com/api/contact"
 zone_name = "mindfulbalanceadhdcoaching.com"
 
