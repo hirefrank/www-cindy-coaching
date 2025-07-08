@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "cd ../.. && pnpm run build",
+    "build": "echo 'Worker build complete - no build step needed for JavaScript worker'",
     "deploy": "wrangler deploy",
     "dev": "wrangler dev"
   },
