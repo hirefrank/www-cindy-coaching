@@ -14,12 +14,18 @@ export default {
       });
     }
 
-    // Only handle POST requests to /api/contact
+    // Only handle POST requests
     if (request.method !== 'POST') {
       return new Response('Method not allowed', { status: 405 });
     }
 
-    return handleContactForm(request, env);
+    // Handle both /api/contact (when routed) and / (when accessed directly)
+    const url = new URL(request.url);
+    if (url.pathname === '/api/contact' || url.pathname === '/') {
+      return handleContactForm(request, env);
+    }
+
+    return new Response('Not found', { status: 404 });
   },
 };
 

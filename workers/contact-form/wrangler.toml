@@ -14,3 +14,6 @@ zone_name = "mindfulbalanceadhdcoaching.com"
 [[routes]]
 pattern = "www.mindfulbalanceadhdcoaching.com/api/contact"
 zone_name = "mindfulbalanceadhdcoaching.com"
+
+# For development/testing on Pages subdomain, we'll use a separate worker deployment
+# The main worker will handle the custom domain, and Pages will need a separate setup
