@@ -4,13 +4,5 @@ name = "mindful-balance-website"
 compatibility_date = "2025-03-25"
 pages_build_output_dir = "dist"
 
-[[env.production.send_email]]
-name = "CONTACT_EMAIL"
-allowed_destination_addresses = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"]
-
-[[env.preview.send_email]]
-name = "CONTACT_EMAIL"
-allowed_destination_addresses = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"]
-
 [observability]
 enabled = true

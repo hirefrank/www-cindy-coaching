@@ -42,7 +42,8 @@ export async function onRequestPost(context) {
 
     // Send email notification
     try {
-      const emailContent = `
+      if (env.CONTACT_EMAIL) {
+        const emailContent = `
 New Contact Form Submission
 
 Name: ${firstName} ${lastName}
@@ -55,22 +56,25 @@ Message:
 ${message}
 
 Submitted: ${new Date().toISOString()}
-      `.trim();
+        `.trim();
 
-      const recipients = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"];
-      
-      // Send email to both recipients
-      for (const recipient of recipients) {
-        const emailMessage = new EmailMessage(
-          "contact@mindfulbalanceadhdcoaching.com",
-          recipient,
-          `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
-        );
+        const recipients = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"];
+        
+        // Send email to both recipients
+        for (const recipient of recipients) {
+          const emailMessage = new EmailMessage(
+            "contact@mindfulbalanceadhdcoaching.com",
+            recipient,
+            `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
+          );
 
-        await env.CONTACT_EMAIL.send(emailMessage);
+          await env.CONTACT_EMAIL.send(emailMessage);
+        }
+        
+        console.log('✅ Emails sent successfully to both recipients');
+      } else {
+        console.log('⚠️ Email binding not configured - form submission logged only');
       }
-      
-      console.log('✅ Emails sent successfully to both recipients');
     } catch (emailError) {
       console.error('❌ Failed to send email:', emailError);
       // Continue anyway - form submission still logged
