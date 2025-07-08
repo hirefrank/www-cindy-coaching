@@ -96,10 +96,12 @@ Submitted: ${new Date().toISOString()}
       
       // Send email to both recipients
       for (const recipient of recipients) {
+        const rawEmail = `From: contact@mindfulbalanceadhdcoaching.com\r\nTo: ${recipient}\r\nSubject: New Contact Form: ${subject}\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n${emailContent}`;
+        
         const emailMessage = new EmailMessage(
           "contact@mindfulbalanceadhdcoaching.com", // sender (must be from your domain)
           recipient,
-          `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
+          rawEmail
         );
 
         await env.CONTACT_EMAIL.send(emailMessage);
