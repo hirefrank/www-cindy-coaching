@@ -3,6 +3,7 @@
 name = "mindful-balance-website"
 compatibility_date = "2025-03-25"
 account_id = "1d881509c2679aa8b5023f278c2ea238"
+pages_build_output_dir = "dist"
 
 [build]
 command = "npm run build"

@@ -1,7 +1,7 @@
 # Redirects for Mindful Balance ADHD Coaching website
 
 # Contact form API - redirect to worker for Pages deployments
-/api/contact https://mindful-balance-contact-form.cr7677.workers.dev/ 200
+/api/contact https://mindful-balance-contact-form.cr7677.workers.dev/ 307
 
 # Common redirects
 /home / 301
