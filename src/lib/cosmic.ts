@@ -76,3 +76,35 @@ export async function getContactContent() {
     return null;
   }
 }
+
+// Helper function to get about page content
+export async function getAboutContent() {
+  try {
+    const response = await cosmic.objects.findOne({
+      type: "about",
+      slug: "about"
+    }).props("slug,title,metadata,type")
+    .depth(1);
+    
+    return response.object;
+  } catch (error) {
+    console.error('Error fetching about content from Cosmic:', error);
+    return null;
+  }
+}
+
+// Helper function to get services page content
+export async function getServicesContent() {
+  try {
+    const response = await cosmic.objects.findOne({
+      type: "services",
+      slug: "services"
+    }).props("slug,title,metadata,type")
+    .depth(1);
+    
+    return response.object;
+  } catch (error) {
+    console.error('Error fetching services content from Cosmic:', error);
+    return null;
+  }
+}

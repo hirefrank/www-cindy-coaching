@@ -1,23 +1,54 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getAboutContent } from "../lib/cosmic";
+
+// Fetch content from Cosmic
+const aboutData = await getAboutContent();
+
+// Extract content with fallbacks
+const headline = aboutData?.metadata?.headline || "From Physical Therapist to ADHD Coach";
+const description = aboutData?.metadata?.description || "Discover how 25+ years of pediatric physical therapy experience led me to become an ICF certified ADHD coach, bridging brain science with practical daily strategies.";
+
+// Personal section
+const personalHeader = aboutData?.metadata?.personal?.header || "The Personal Journey";
+const personalContent = aboutData?.metadata?.personal?.content || "";
+
+// Professional section
+const professionalHeader = aboutData?.metadata?.professional?.header || "Professional Evolution";
+const professionalContent = aboutData?.metadata?.professional?.content || "";
+
+// Certifications section
+const certificationsHeader = aboutData?.metadata?.certifications?.header || "Credentials & Training";
+const certificationsDescription = aboutData?.metadata?.certifications?.description || "";
+const certificationsContent = aboutData?.metadata?.certifications?.content || [];
+
+// Approach section
+const approachHeader = aboutData?.metadata?.approach?.header || "My Approach & Philosophy";
+const approachDescription = aboutData?.metadata?.approach?.description || "";
+const approachContent = aboutData?.metadata?.approach?.content || [];
+
+// Beyond section
+const beyondHeader = aboutData?.metadata?.beyond?.header || "Beyond the Professional";
+const beyondDescription = aboutData?.metadata?.beyond?.description || "";
+
+// Helper function to format content into paragraphs
+const formatParagraphs = (content: string) => {
+    return content.split('\n\n').filter((para: string) => para.trim());
+};
 ---
 
 <Layout
     title="About - Mindful Balance ADHD Coaching"
-    description="Discover how 25+ years of pediatric physical therapy experience led me to become an ICF certified ADHD coach"
+    description={description}
 >
     <!-- Hero Section -->
     <section
         class="section-padding bg-gradient-to-b from-muted/30 to-background"
     >
         <div class="max-w-4xl mx-auto container-padding text-center">
-            <h1 class="mb-24">
-                My Story: From Physical Therapist to ADHD Coach
-            </h1>
+            <h1 class="mb-24">{headline}</h1>
             <p class="text-xl text-muted-foreground leading-relaxed">
-                Discover how 25+ years of pediatric physical therapy experience
-                led me to become an ICF certified ADHD coach, bridging brain
-                science with practical daily strategies.
+                {description}
             </p>
         </div>
     </section>
@@ -29,32 +60,12 @@ import Layout from "../layouts/Layout.astro";
                 class="grid grid-cols-1 lg:grid-cols-2 gap-48 items-center mb-64"
             >
                 <div>
-                    <h2 class="mb-24">The Personal Journey</h2>
-                    <p
-                        class="text-lg text-muted-foreground mb-24 leading-relaxed"
-                    >
-                        My path to ADHD coaching began with my own personal
-                        discovery. After years of working with children with
-                        neurological differences, I began to recognize patterns
-                        in my own life that pointed to ADHD.
-                    </p>
-                    <p
-                        class="text-lg text-muted-foreground mb-24 leading-relaxed"
-                    >
-                        This revelation transformed not only my understanding of
-                        myself but also my approach to helping others. I
-                        realized that my struggles with executive function,
-                        organization, and focus weren't character flaws—they
-                        were neurological differences that could be understood
-                        and managed with the right strategies.
-                    </p>
-                    <p class="text-lg text-muted-foreground leading-relaxed">
-                        As a mother of triplet teenagers, I've experienced
-                        firsthand the complexities of parenting while managing
-                        ADHD. This personal experience, combined with my
-                        professional expertise, gives me a unique perspective on
-                        the challenges families face.
-                    </p>
+                    <h2 class="mb-24">{personalHeader}</h2>
+                    {formatParagraphs(personalContent).map((paragraph: string) => (
+                        <p class="text-lg text-muted-foreground mb-24 leading-relaxed">
+                            {paragraph}
+                        </p>
+                    ))}
                 </div>
 
                 <div class="relative">
@@ -73,31 +84,12 @@ import Layout from "../layouts/Layout.astro";
             <!-- Professional Evolution -->
             <div class="grid grid-cols-1 gap-48 items-center">
                 <div class="order-1 lg:order-2">
-                    <h2 class="mb-24">Professional Evolution</h2>
-                    <p
-                        class="text-lg text-muted-foreground mb-24 leading-relaxed"
-                    >
-                        My career as a physical therapist began over 25 years
-                        ago with a focus on pediatrics and brain-based
-                        rehabilitation. I specialized in working with children
-                        who had neurological differences, developmental delays,
-                        and learning challenges.
-                    </p>
-                    <p
-                        class="text-lg text-muted-foreground mb-24 leading-relaxed"
-                    >
-                        Through my work in early intervention and school-based
-                        therapy, I developed a deep understanding of how the
-                        brain and body work together. I learned that movement,
-                        sensory processing, and executive function are all
-                        interconnected.
-                    </p>
-                    <p class="text-lg text-muted-foreground leading-relaxed">
-                        This foundation in understanding the neurological basis
-                        of behavior and learning naturally evolved into an
-                        interest in ADHD coaching, where I could apply these
-                        same principles in a different format.
-                    </p>
+                    <h2 class="mb-24">{professionalHeader}</h2>
+                    {formatParagraphs(professionalContent).map((paragraph: string) => (
+                        <p class="text-lg text-muted-foreground mb-24 leading-relaxed">
+                            {paragraph}
+                        </p>
+                    ))}
                 </div>
             </div>
         </div>
@@ -107,62 +99,30 @@ import Layout from "../layouts/Layout.astro";
     <section class="py-48 bg-muted/30">
         <div class="max-w-6xl mx-auto container-padding">
             <div class="text-center mb-64">
-                <h2 class="mb-24">Credentials & Training</h2>
+                <h2 class="mb-24">{certificationsHeader}</h2>
                 <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-                    My educational background and ongoing professional
-                    development reflect my commitment to providing
-                    evidence-based, comprehensive support.
+                    {certificationsDescription}
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-32">
-                <div class="bg-card rounded-lg shadow-sm">
-                    <div class="p-32 text-center">
-                        <div
-                            class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-24"
-                        >
-                            <span class="text-primary font-bold">ICF</span>
+                {certificationsContent.map((cert: any, index: number) => (
+                    <div class="bg-card rounded-lg shadow-sm">
+                        <div class="p-32 text-center">
+                            <div
+                                class={`w-16 h-16 ${index % 2 === 0 ? 'bg-primary/10' : 'bg-secondary/10'} rounded-full flex items-center justify-center mx-auto mb-24`}
+                            >
+                                <span class={`${index % 2 === 0 ? 'text-primary' : 'text-secondary'} font-bold`}>
+                                    {cert.abbreviation}
+                                </span>
+                            </div>
+                            <h3 class="mb-16">{cert.header}</h3>
+                            <p class="text-muted-foreground">
+                                {cert.description}
+                            </p>
                         </div>
-                        <h3 class="mb-16">ICF ACC Certification</h3>
-                        <p class="text-muted-foreground">
-                            International Coaching Federation Associate
-                            Certified Coach credential, ensuring ethical and
-                            professional coaching practices.
-                        </p>
                     </div>
-                </div>
-
-                <div class="bg-card rounded-lg shadow-sm">
-                    <div class="p-32 text-center">
-                        <div
-                            class="w-16 h-16 bg-secondary/10 rounded-full flex items-center justify-center mx-auto mb-24"
-                        >
-                            <span class="text-secondary font-bold">MPT</span>
-                        </div>
-                        <h3 class="mb-16">Master of Physical Therapy</h3>
-                        <p class="text-muted-foreground">
-                            Advanced degree in physical therapy with specialized
-                            training in pediatric and neurological
-                            rehabilitation.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="bg-card rounded-lg shadow-sm">
-                    <div class="p-32 text-center">
-                        <div
-                            class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-24"
-                        >
-                            <span class="text-primary font-bold">CAS</span>
-                        </div>
-                        <h3 class="mb-16">Certified ADHD Specialist</h3>
-                        <p class="text-muted-foreground">
-                            Specialized certification in ADHD coaching
-                            methodologies and evidence-based intervention
-                            strategies.
-                        </p>
-                    </div>
-                </div>
+                ))}
             </div>
         </div>
     </section>
@@ -171,55 +131,21 @@ import Layout from "../layouts/Layout.astro";
     <section class="py-48">
         <div class="max-w-6xl mx-auto container-padding">
             <div class="text-center mb-64">
-                <h2 class="mb-24">My Approach & Philosophy</h2>
+                <h2 class="mb-24">{approachHeader}</h2>
                 <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-                    My coaching philosophy is grounded in the understanding that
-                    ADHD is not a disorder to be fixed, but a neurological
-                    difference to be understood and supported.
+                    {approachDescription}
                 </p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-48">
-                <div>
-                    <h3 class="mb-24">Brain-Body Connection</h3>
-                    <p
-                        class="text-lg text-muted-foreground mb-32 leading-relaxed"
-                    >
-                        My physical therapy background gives me a unique
-                        perspective on how movement, sensory processing, and
-                        cognitive function are interconnected. I incorporate
-                        body-based strategies alongside traditional coaching
-                        techniques.
-                    </p>
-
-                    <h3 class="mb-24">Collaborative Partnership</h3>
-                    <p class="text-lg text-muted-foreground leading-relaxed">
-                        I believe in working with clients as partners in their
-                        journey. You are the expert on your own life, and I
-                        bring knowledge, strategies, and support to help you
-                        achieve your goals.
-                    </p>
-                </div>
-
-                <div>
-                    <h3 class="mb-24">Practical, Sustainable Strategies</h3>
-                    <p
-                        class="text-lg text-muted-foreground mb-32 leading-relaxed"
-                    >
-                        Every strategy I recommend is designed to be practical
-                        and sustainable. I focus on small changes that can make
-                        a big difference in daily life, rather than overwhelming
-                        transformations.
-                    </p>
-
-                    <h3 class="mb-24">Strength-Based Approach</h3>
-                    <p class="text-lg text-muted-foreground leading-relaxed">
-                        I help clients identify and leverage their unique
-                        strengths while developing strategies to manage
-                        challenges. ADHD comes with many gifts, and I believe in
-                        celebrating those while building skills.
-                    </p>
-                </div>
+                {approachContent.map((approach: any, index: number) => (
+                    <div class={index === approachContent.length - 1 && approachContent.length % 2 !== 0 ? "md:col-span-2 md:max-w-xl md:mx-auto" : ""}>
+                        <h3 class="mb-24">{approach.name}</h3>
+                        <p class={`text-lg text-muted-foreground ${index < approachContent.length - 2 ? 'mb-32' : ''} leading-relaxed`}>
+                            {approach.body}
+                        </p>
+                    </div>
+                ))}
             </div>
         </div>
     </section>
@@ -227,12 +153,9 @@ import Layout from "../layouts/Layout.astro";
     <!-- Personal Touch -->
     <section class="py-48 bg-muted/30">
         <div class="max-w-4xl mx-auto container-padding text-center">
-            <h2 class="mb-24">Beyond the Professional</h2>
+            <h2 class="mb-24">{beyondHeader}</h2>
             <p class="text-xl text-muted-foreground mb-32 leading-relaxed">
-                When I'm not coaching, you'll find me enjoying life in Bergen
-                County with my family. As a mother of triplet teenagers, I
-                understand the beautiful chaos of family life and the importance
-                of finding balance.
+                {beyondDescription}
             </p>
         </div>
     </section>

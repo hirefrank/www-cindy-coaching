@@ -1,10 +1,36 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CalButton from '../components/CalButton';
-import { getGlobalSettings } from '../lib/cosmic';
+import { getGlobalSettings, getServicesContent } from '../lib/cosmic';
 
-// Fetch global settings from Cosmic
+// Helper function to decode HTML entities
+const decodeHTMLEntities = (text: string) => {
+    // Server-side safe decoding
+    return text
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'")
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&');
+};
+
+// Fetch content from Cosmic
 const globalSettings = await getGlobalSettings();
+const servicesData = await getServicesContent();
+
+// Extract content with fallbacks
+const headline = decodeHTMLEntities(servicesData?.metadata?.headline || "Comprehensive ADHD Coaching Services");
+const description = decodeHTMLEntities(servicesData?.metadata?.description || "Bridging brain science with practical strategies to support neurodiverse individuals, families, and organizations through evidence-based coaching approaches.");
+
+// Individuals section (Parents & Families)
+const individualsHeader = decodeHTMLEntities(servicesData?.metadata?.individuals?.header || "For Parents & Families");
+const individualsDescription = decodeHTMLEntities(servicesData?.metadata?.individuals?.description || "");
+const individualsContent = servicesData?.metadata?.individuals?.content || [];
+
+// Groups section (Organizations)
+const groupsHeader = decodeHTMLEntities(servicesData?.metadata?.groups?.header || "For Organizations & Professionals");
+const groupsDescription = decodeHTMLEntities(servicesData?.metadata?.groups?.description || "");
+const groupsContent = servicesData?.metadata?.groups?.content || [];
 
 // Extract calendar links with fallbacks
 const calendarLinks = {
@@ -19,16 +45,44 @@ const getCalSlug = (url: string) => {
     }
     return url;
 };
+
+// Helper function to extract bullet points from HTML
+const extractBulletPoints = (html: string) => {
+    // Match all <p> tags that contain bullet points
+    const bulletRegex = /<p[^>]*>&bull;\s*([^<]+)<\/p>/g;
+    const bullets = [];
+    let match;
+    while ((match = bulletRegex.exec(html)) !== null) {
+        bullets.push(decodeHTMLEntities(match[1].trim()));
+    }
+    return bullets;
+};
+
+// Helper function to extract main description from HTML
+const extractMainDescription = (html: string) => {
+    // Find the first <p> tag with id="isPasted" which seems to contain the main description
+    let match = html.match(/<p[^>]*id="isPasted"[^>]*>([^<]+)<\/p>/);
+    if (match && match[1].trim()) {
+        return decodeHTMLEntities(match[1].trim());
+    }
+    
+    // If no isPasted, look for first <p> without bullet points
+    match = html.match(/<p[^>]*>(?!.*&bull;)([^<]+)<\/p>/);
+    if (match && match[1].trim()) {
+        return decodeHTMLEntities(match[1].trim());
+    }
+    
+    return '';
+};
 ---
 
 <Layout title="Services - Mindful Balance ADHD Coaching">
   <!-- Hero Section -->
   <section class="section-padding bg-gradient-to-b from-muted/30 to-background">
     <div class="max-w-4xl mx-auto container-padding text-center">
-      <h1 class="mb-24">Comprehensive ADHD Coaching Services</h1>
+      <h1 class="mb-24">{headline}</h1>
       <p class="text-xl text-muted-foreground leading-relaxed">
-        Bridging brain science with practical strategies to support neurodiverse 
-        individuals, families, and organizations through evidence-based coaching approaches.
+        {description}
       </p>
     </div>
   </section>
@@ -37,65 +91,45 @@ const getCalSlug = (url: string) => {
   <section class="py-48">
     <div class="max-w-6xl mx-auto container-padding">
       <div class="text-center mb-64">
-        <h2 class="mb-24">For Parents & Families</h2>
+        <h2 class="mb-24">{individualsHeader}</h2>
         <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-          As a mother of triplets and experienced PT, I understand the unique challenges 
-          families face when supporting neurodiverse children.
+          {individualsDescription}
         </p>
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-32 max-w-4xl mx-auto">
-        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-          <div class="card-content p-32 flex flex-col flex-grow">
-            <h3 class="mb-16">Parent Coaching</h3>
-            <p class="text-muted-foreground mb-24 leading-relaxed">
-              Supporting parents in understanding and advocating for their neurodiverse children, 
-              with family support and strategy development. Working to reduce conflict and build support.
-            </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
-              <p>• Understanding your child's unique brain</p>
-              <p>• Developing effective communication strategies</p>
-              <p>• School advocacy and IEP support</p>
-              <p>• Family system assessment</p>
+        {individualsContent.map((service: any) => {
+          const mainDescription = extractMainDescription(service.description);
+          const bulletPoints = extractBulletPoints(service.description);
+          
+          return (
+            <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+              <div class="card-content p-32 flex flex-col flex-grow">
+                <h3 class="mb-16">{decodeHTMLEntities(service.title)}</h3>
+                <p class="text-muted-foreground mb-24 leading-relaxed">
+                  {mainDescription}
+                </p>
+                {bulletPoints.length > 0 && (
+                  <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
+                    {bulletPoints.map((bullet: string) => (
+                      <p>• {bullet}</p>
+                    ))}
+                  </div>
+                )}
+                <div class="mt-auto">
+                  <CalButton 
+                    calLink={getCalSlug(calendarLinks.consultation)}
+                    className="btn-primary w-full"
+                    namespace="services-consultation"
+                    client:load
+                  >
+                    Schedule Consultation
+                  </CalButton>
+                </div>
+              </div>
             </div>
-            <div class="mt-auto">
-              <CalButton 
-                calLink={getCalSlug(calendarLinks.consultation)}
-                className="btn-primary w-full"
-                namespace="services-consultation"
-                client:load
-              >
-                Schedule Consultation
-              </CalButton>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-          <div class="card-content p-32 flex flex-col flex-grow">
-            <h3 class="mb-16">Adult Coaching</h3>
-            <p class="text-muted-foreground mb-24 leading-relaxed">
-              One-on-one coaching for adults with ADHD and executive function challenges. 
-              Develop personalized strategies that work with your unique brain and lifestyle.
-            </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
-              <p>• Workplace productivity and organization</p>
-              <p>• Time management and priority setting</p>
-              <p>• Emotional regulation and stress management</p>
-              <p>• Building sustainable daily routines</p>
-            </div>
-            <div class="mt-auto">
-              <CalButton 
-                calLink={getCalSlug(calendarLinks.consultation)}
-                className="btn-primary w-full"
-                namespace="services-consultation"
-                client:load
-              >
-                Schedule Consultation
-              </CalButton>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   </section>
@@ -105,91 +139,46 @@ const getCalSlug = (url: string) => {
   <section class="py-48">
     <div class="max-w-6xl mx-auto container-padding">
       <div class="text-center mb-64">
-        <h2 class="mb-24">For Organizations & Professionals</h2>
+        <h2 class="mb-24">{groupsHeader}</h2>
         <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Professional development and consultation services for educators and organizations 
-          working with neurodiverse populations.
+          {groupsDescription}
         </p>
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-32">
-        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-          <div class="card-content p-32 flex flex-col flex-grow">
-            <h3 class="mb-16">Teacher Training & Classroom Support</h3>
-            <p class="text-muted-foreground mb-24 leading-relaxed">
-              Professional development for educators working with neurodiverse students. 
-              Practical strategies for classroom management and individualized support.
-            </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
-              <p>• Understanding ADHD in the classroom</p>
-              <p>• Sensory and movement strategies</p>
-              <p>• Executive function support</p>
-              <p>• Behavior intervention planning</p>
+        {groupsContent.map((service: any, index: number) => {
+          const mainDescription = extractMainDescription(service.description);
+          const bulletPoints = extractBulletPoints(service.description);
+          const isOfficeHours = service.title.includes('Office Hours');
+          
+          return (
+            <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+              <div class="card-content p-32 flex flex-col flex-grow">
+                <h3 class="mb-16">{decodeHTMLEntities(service.title)}</h3>
+                <p class="text-muted-foreground mb-24 leading-relaxed">
+                  {mainDescription}
+                </p>
+                {bulletPoints.length > 0 && (
+                  <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
+                    {bulletPoints.map((bullet: string) => (
+                      <p>• {bullet}</p>
+                    ))}
+                  </div>
+                )}
+                <div class="mt-auto">
+                  <CalButton 
+                    calLink={getCalSlug(isOfficeHours ? calendarLinks.officeHours : calendarLinks.consultation)}
+                    className="btn-primary w-full"
+                    namespace={isOfficeHours ? "office-hours" : "services-consultation"}
+                    client:load
+                  >
+                    {isOfficeHours ? "Schedule Office Hours" : "Schedule Consultation"}
+                  </CalButton>
+                </div>
+              </div>
             </div>
-            <div class="mt-auto">
-              <CalButton 
-                calLink={getCalSlug(calendarLinks.consultation)}
-                className="btn-primary w-full"
-                namespace="services-consultation"
-                client:load
-              >
-                Schedule Consultation
-              </CalButton>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-          <div class="card-content p-32 flex flex-col flex-grow">
-            <h3 class="mb-16">Presentations for Parent Advisory Groups</h3>
-            <p class="text-muted-foreground mb-24 leading-relaxed">
-              Educational presentations for school parent groups on supporting neurodiverse 
-              children at home and advocating effectively within the school system.
-            </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
-              <p>• ADHD myths and realities</p>
-              <p>• Home-school collaboration</p>
-              <p>• IEP and 504 plan guidance</p>
-              <p>• Building resilience in children</p>
-            </div>
-            <div class="mt-auto">
-              <CalButton 
-                calLink={getCalSlug(calendarLinks.consultation)}
-                className="btn-primary w-full"
-                namespace="services-consultation"
-                client:load
-              >
-                Schedule Consultation
-              </CalButton>
-            </div>
-          </div>
-        </div>
-        
-        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
-          <div class="card-content p-32 flex flex-col flex-grow">
-            <h3 class="mb-16">Professional Networking (Office Hours)</h3>
-            <p class="text-muted-foreground mb-24 leading-relaxed">
-              Brief sessions for allied professionals or potential clients to explore 
-              collaboration opportunities and discuss specific questions or concerns.
-            </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
-              <p>• Professional consultation</p>
-              <p>• Resource sharing</p>
-              <p>• Referral discussions</p>
-              <p>• Introductory conversations</p>
-            </div>
-            <div class="mt-auto">
-              <CalButton 
-                calLink={getCalSlug(calendarLinks.officeHours)}
-                className="btn-primary w-full"
-                namespace="office-hours"
-                client:load
-              >
-                Schedule Office Hours
-              </CalButton>
-            </div>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </div>
   </section>
