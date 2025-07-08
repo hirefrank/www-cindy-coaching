@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "wrangler": "^4.24.0"
+  },
+  "dependencies": {
+    "@cloudflare/pages-plugin-static-forms": "^1.0.3"
   }
 }

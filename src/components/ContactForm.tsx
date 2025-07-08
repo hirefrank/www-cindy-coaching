@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -6,74 +6,26 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    interest: '',
-    subject: '',
-    message: ''
-  });
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-      
-      const result = await response.json();
-      
-      if (response.ok) {
-        alert(result.message || 'Message sent successfully!');
-        setFormData({
-          firstName: '',
-          lastName: '',
-          email: '',
-          phone: '',
-          interest: '',
-          subject: '',
-          message: ''
-        });
-      } else {
-        alert(result.error || 'Failed to send message. Please try again.');
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      alert('Failed to send message. Please try again.');
-    }
-  };
-
-  const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-  };
-
   return (
     <Card>
       <CardContent className="p-32">
         <h3 className="mb-24">Send Me a Message</h3>
-        <form onSubmit={handleSubmit} className="space-y-24" data-cf-form="contact">
+        <form className="space-y-24" data-static-form-name="contact">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
             <div>
               <label className="block text-sm font-medium mb-8">First Name</label>
               <Input 
+                name="firstName"
                 placeholder="Your first name" 
-                value={formData.firstName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('firstName', e.target.value)}
+                required
               />
             </div>
             <div>
               <label className="block text-sm font-medium mb-8">Last Name</label>
               <Input 
+                name="lastName"
                 placeholder="Your last name" 
-                value={formData.lastName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('lastName', e.target.value)}
+                required
               />
             </div>
           </div>
@@ -81,65 +33,57 @@ const ContactForm = () => {
           <div>
             <label className="block text-sm font-medium mb-8">Email</label>
             <Input 
+              name="email"
               type="email" 
               placeholder="your.email@example.com" 
-              value={formData.email}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('email', e.target.value)}
+              required
             />
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-8">Phone (Optional)</label>
             <Input 
+              name="phone"
               type="tel" 
-              placeholder="Your phone number" 
-              value={formData.phone}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('phone', e.target.value)}
+              placeholder="Your phone number"
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-8">I'm Interested In</label>
-            <Select 
-              value={formData.interest} 
-              onValueChange={(value: string) => handleChange('interest', value)}
+            <label className="block text-sm font-medium mb-8">Interest</label>
+            <select 
+              name="interest"
+              className="w-full p-2 border border-gray-300 rounded-md"
             >
-              <SelectTrigger>
-                <SelectValue placeholder="Select a service" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="parent-coaching">Parent Coaching</SelectItem>
-                <SelectItem value="teen-coaching">Individual Coaching for Teens</SelectItem>
-                <SelectItem value="family-consulting">Family Consulting</SelectItem>
-                <SelectItem value="adult-coaching">Adult ADHD Coaching</SelectItem>
-                <SelectItem value="teacher-training">Teacher Training</SelectItem>
-                <SelectItem value="presentations">Parent Group Presentations</SelectItem>
-                <SelectItem value="office-hours">Professional Office Hours</SelectItem>
-                <SelectItem value="general">General Inquiry</SelectItem>
-              </SelectContent>
-            </Select>
+              <option value="">Select your interest</option>
+              <option value="Individual Coaching">Individual Coaching</option>
+              <option value="Parent Coaching">Parent Coaching</option>
+              <option value="Consultation">Consultation</option>
+              <option value="Workshop">Workshop</option>
+              <option value="Other">Other</option>
+            </select>
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-8">Subject</label>
             <Input 
+              name="subject"
               placeholder="Brief subject line" 
-              value={formData.subject}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleChange('subject', e.target.value)}
+              required
             />
           </div>
           
           <div>
             <label className="block text-sm font-medium mb-8">Message</label>
             <Textarea 
-              placeholder="Tell me a bit about your situation and how I might be able to help..."
-              rows={5}
-              value={formData.message}
-              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => handleChange('message', e.target.value)}
+              name="message"
+              placeholder="Tell me about your situation and how I can help..."
+              className="min-h-[120px]"
+              required
             />
           </div>
           
-          <Button type="submit" className="btn-primary w-full">
+          <Button type="submit" className="w-full">
             Send Message
           </Button>
         </form>
