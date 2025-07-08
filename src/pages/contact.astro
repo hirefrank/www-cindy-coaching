@@ -54,7 +54,7 @@ const getCalSlug = (url: string) => {
 };
 ---
 
-<Layout title="Contact - Cindy Romanzo Coaching">
+<Layout title="Contact - Mindful Balance ADHD Coaching">
   <!-- Hero Section -->
   <section class="section-padding bg-gradient-to-b from-muted/30 to-background">
     <div class="max-w-4xl mx-auto container-padding text-center">
@@ -108,28 +108,28 @@ const getCalSlug = (url: string) => {
           </div>
           
           <!-- Quick Scheduling -->
-          <div class="bg-muted/30 rounded-lg shadow-sm">
+          <div class="bg-muted rounded-lg shadow-sm">
             <div class="p-32">
               <h3 class="mb-16">Quick Scheduling Options</h3>
               <p class="text-muted-foreground mb-24">
                 Skip the form and schedule directly with me using the options below.
               </p>
-              <div class="space-y-16">
+              <div>
                 <CalButton 
                   calLink={getCalSlug(calendarLinks.consultation)}
-                  className="btn-primary w-full"
+                  className="btn-primary w-full mb-16"
                   namespace="contact-consultation"
                   client:load
                 >
-                  Schedule 45-Minute Consultation
+                  Free Consultation
                 </CalButton>
                 <CalButton 
                   calLink={getCalSlug(calendarLinks.officeHours)}
-                  className="btn-secondary w-full"
+                  className="btn-primary w-full"
                   namespace="contact-office-hours"
                   client:load
                 >
-                  Schedule 15-Minute Office Hours
+                  Office Hours
                 </CalButton>
               </div>
             </div>

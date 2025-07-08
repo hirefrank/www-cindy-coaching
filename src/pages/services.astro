@@ -21,7 +21,7 @@ const getCalSlug = (url: string) => {
 };
 ---
 
-<Layout title="Services - Cindy Coaching">
+<Layout title="Services - Mindful Balance ADHD Coaching">
   <!-- Hero Section -->
   <section class="section-padding bg-gradient-to-b from-muted/30 to-background">
     <div class="max-w-4xl mx-auto container-padding text-center">
@@ -45,169 +45,88 @@ const getCalSlug = (url: string) => {
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-32">
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-primary font-bold text-lg">P</span>
-            </div>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
             <h3 class="mb-16">Parent Coaching</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
-              Supporting parents in understanding and advocating for their neurodiverse children. 
-              Learn practical strategies for daily routines, homework challenges, and building 
-              your child's self-confidence.
+              Supporting parents in understanding and advocating for their neurodiverse children, 
+              with family support and strategy development. Working to reduce conflict and build support.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
               <p>• Understanding your child's unique brain</p>
               <p>• Developing effective communication strategies</p>
-              <p>• Creating supportive home environments</p>
               <p>• School advocacy and IEP support</p>
+              <p>• Family system assessment</p>
             </div>
-            <p class="text-sm font-medium mb-24">Ongoing coaching relationships</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.consultation)}
-              className="btn-primary w-full"
-              namespace="services-consultation"
-              client:load
-            >
-              Schedule Consultation
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.consultation)}
+                className="btn-primary w-full"
+                namespace="services-consultation"
+                client:load
+              >
+                Schedule Consultation
+              </CalButton>
+            </div>
           </div>
         </div>
         
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-secondary font-bold text-lg">T</span>
-            </div>
-            <h3 class="mb-16">Individual Coaching for Teens</h3>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
+            <h3 class="mb-16">Teen Coaching</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
               Direct coaching for neurodiverse teenagers on executive function and life skills. 
               Building independence, confidence, and self-advocacy skills for academic and 
               social success.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
               <p>• Executive function skill development</p>
               <p>• Time management and organization</p>
               <p>• Social skills and peer relationships</p>
               <p>• College and career preparation</p>
             </div>
-            <p class="text-sm font-medium mb-24">Weekly sessions</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.consultation)}
-              className="btn-primary w-full"
-              namespace="services-consultation"
-              client:load
-            >
-              Schedule Consultation
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.consultation)}
+                className="btn-primary w-full"
+                namespace="services-consultation"
+                client:load
+              >
+                Schedule Consultation
+              </CalButton>
+            </div>
           </div>
         </div>
         
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-primary font-bold text-lg">F</span>
-            </div>
-            <h3 class="mb-16">Family Consulting</h3>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
+            <h3 class="mb-16">Adult Coaching</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
-              Comprehensive family support and strategy development. Working with the whole 
-              family system to create understanding, reduce conflict, and build supportive 
-              relationships.
+              One-on-one coaching for adults with ADHD and executive function challenges. 
+              Develop personalized strategies that work with your unique brain and lifestyle.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
-              <p>• Family system assessment</p>
-              <p>• Sibling relationship support</p>
-              <p>• Communication training</p>
-              <p>• Crisis intervention and planning</p>
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
+              <p>• Workplace productivity and organization</p>
+              <p>• Time management and priority setting</p>
+              <p>• Emotional regulation and stress management</p>
+              <p>• Building sustainable daily routines</p>
             </div>
-            <p class="text-sm font-medium mb-24">Project-based or ongoing</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.consultation)}
-              className="btn-primary w-full"
-              namespace="services-consultation"
-              client:load
-            >
-              Schedule Consultation
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.consultation)}
+                className="btn-primary w-full"
+                namespace="services-consultation"
+                client:load
+              >
+                Schedule Consultation
+              </CalButton>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- For Adults -->
-  <section class="py-48 bg-muted/30">
-    <div class="max-w-6xl mx-auto container-padding">
-      <div class="text-center mb-64">
-        <h2 class="mb-24">For Adults</h2>
-        <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
-          Individual support for adults with ADHD and executive function challenges, 
-          drawing on brain-body strategies and practical skill development.
-        </p>
-      </div>
-      
-      <div class="max-w-4xl mx-auto">
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-48">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-48 items-center">
-              <div>
-                <div class="w-16 h-16 bg-secondary/10 rounded-lg flex items-center justify-center mb-24">
-                  <span class="text-secondary font-bold text-xl">A</span>
-                </div>
-                <h3 class="mb-24">Individual ADHD/Executive Function Coaching</h3>
-                <p class="text-muted-foreground mb-32 leading-relaxed">
-                  One-on-one coaching for adults with ADHD and executive function challenges. 
-                  Develop personalized strategies that work with your unique brain and lifestyle.
-                </p>
-                <CalButton 
-                  calLink={getCalSlug(calendarLinks.consultation)}
-                  className="btn-primary"
-                  namespace="adult-consultation"
-                  client:load
-                >
-                  Schedule Consultation
-                </CalButton>
-              </div>
-              
-              <div>
-                <div class="space-y-16 text-muted-foreground">
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Workplace productivity and organization systems</p>
-                  </div>
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Time management and priority setting</p>
-                  </div>
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Emotional regulation and stress management</p>
-                  </div>
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Relationship and communication skills</p>
-                  </div>
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Goal setting and achievement strategies</p>
-                  </div>
-                  <div class="flex items-start space-x-12">
-                    <div class="w-2 h-2 bg-secondary rounded-full mt-8 flex-shrink-0"></div>
-                    <p>Building sustainable daily routines</p>
-                  </div>
-                </div>
-                
-                <div class="mt-32 p-24 bg-muted/50 rounded-lg">
-                  <p class="text-sm font-medium mb-8">Session Format:</p>
-                  <p class="text-sm text-muted-foreground">Weekly or bi-weekly sessions, 45-60 minutes each</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- For Organizations -->
   <section class="py-48">
@@ -221,87 +140,81 @@ const getCalSlug = (url: string) => {
       </div>
       
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-32">
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-primary font-bold text-lg">T</span>
-            </div>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
             <h3 class="mb-16">Teacher Training & Classroom Support</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
               Professional development for educators working with neurodiverse students. 
               Practical strategies for classroom management and individualized support.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
               <p>• Understanding ADHD in the classroom</p>
               <p>• Sensory and movement strategies</p>
               <p>• Executive function support</p>
               <p>• Behavior intervention planning</p>
             </div>
-            <p class="text-sm font-medium mb-24">Workshops, presentations, ongoing consultation</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.consultation)}
-              className="btn-primary w-full"
-              namespace="services-consultation"
-              client:load
-            >
-              Schedule Consultation
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.consultation)}
+                className="btn-primary w-full"
+                namespace="services-consultation"
+                client:load
+              >
+                Schedule Consultation
+              </CalButton>
+            </div>
           </div>
         </div>
         
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-secondary font-bold text-lg">P</span>
-            </div>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
             <h3 class="mb-16">Presentations for Parent Advisory Groups</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
               Educational presentations for school parent groups on supporting neurodiverse 
               children at home and advocating effectively within the school system.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
               <p>• ADHD myths and realities</p>
               <p>• Home-school collaboration</p>
               <p>• IEP and 504 plan guidance</p>
               <p>• Building resilience in children</p>
             </div>
-            <p class="text-sm font-medium mb-24">1-2 hour presentations with Q&A</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.consultation)}
-              className="btn-primary w-full"
-              namespace="services-consultation"
-              client:load
-            >
-              Schedule Consultation
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.consultation)}
+                className="btn-primary w-full"
+                namespace="services-consultation"
+                client:load
+              >
+                Schedule Consultation
+              </CalButton>
+            </div>
           </div>
         </div>
         
-        <div class="card hover:shadow-lg transition-shadow duration-300">
-          <div class="card-content p-32">
-            <div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-24">
-              <span class="text-primary font-bold text-lg">O</span>
-            </div>
+        <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+          <div class="card-content p-32 flex flex-col flex-grow">
             <h3 class="mb-16">Professional Networking (Office Hours)</h3>
             <p class="text-muted-foreground mb-24 leading-relaxed">
               Brief sessions for allied professionals or potential clients to explore 
               collaboration opportunities and discuss specific questions or concerns.
             </p>
-            <div class="space-y-8 text-sm text-muted-foreground mb-24">
+            <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
               <p>• Professional consultation</p>
               <p>• Resource sharing</p>
               <p>• Referral discussions</p>
               <p>• Introductory conversations</p>
             </div>
-            <p class="text-sm font-medium mb-24">15-30 minute informal sessions</p>
-            <CalButton 
-              calLink={getCalSlug(calendarLinks.officeHours)}
-              className="btn-secondary w-full"
-              namespace="office-hours"
-              client:load
-            >
-              Schedule Office Hours
-            </CalButton>
+            <div class="mt-auto">
+              <CalButton 
+                calLink={getCalSlug(calendarLinks.officeHours)}
+                className="btn-primary w-full"
+                namespace="office-hours"
+                client:load
+              >
+                Schedule Office Hours
+              </CalButton>
+            </div>
           </div>
         </div>
       </div>
