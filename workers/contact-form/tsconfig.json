@@ -8,6 +8,5 @@
     "skipLibCheck": true,
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["../../**"]
+  "include": ["src/**/*"]
 }
