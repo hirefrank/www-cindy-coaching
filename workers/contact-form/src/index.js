@@ -6,17 +6,25 @@ export default {
     // Handle CORS preflight requests
     if (request.method === 'OPTIONS') {
       return new Response(null, {
+        status: 204,
         headers: {
           'Access-Control-Allow-Origin': '*',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
+          'Access-Control-Max-Age': '86400',
         },
       });
     }
 
     // Only handle POST requests
     if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
+      return new Response('Method not allowed', { 
+        status: 405,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'text/plain',
+        }
+      });
     }
 
     // Handle both /api/contact (when routed) and / (when accessed directly)
@@ -25,7 +33,13 @@ export default {
       return handleContactForm(request, env);
     }
 
-    return new Response('Not found', { status: 404 });
+    return new Response('Not found', { 
+      status: 404,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'text/plain',
+      }
+    });
   },
 };
 
