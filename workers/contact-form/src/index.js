@@ -96,7 +96,8 @@ Submitted: ${new Date().toISOString()}
       
       // Send email to both recipients
       for (const recipient of recipients) {
-        const rawEmail = `From: contact@mindfulbalanceadhdcoaching.com\r\nTo: ${recipient}\r\nSubject: New Contact Form: ${subject}\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n${emailContent}`;
+        const messageId = `<${Date.now()}-${Math.random().toString(36).substr(2, 9)}@mindfulbalanceadhdcoaching.com>`;
+        const rawEmail = `From: contact@mindfulbalanceadhdcoaching.com\r\nTo: ${recipient}\r\nSubject: New Contact Form: ${subject}\r\nMessage-ID: ${messageId}\r\nDate: ${new Date().toUTCString()}\r\nContent-Type: text/plain; charset=utf-8\r\n\r\n${emailContent}`;
         
         const emailMessage = new EmailMessage(
           "contact@mindfulbalanceadhdcoaching.com", // sender (must be from your domain)
