@@ -4,7 +4,7 @@ compatibility_date = "2025-03-25"
 account_id = "1d881509c2679aa8b5023f278c2ea238"
 
 send_email = [
-    {name = "CONTACT_EMAIL", destination_address = "cindy@mindfulbalanceadhdcoaching.com"}
+    {name = "CONTACT_EMAIL", allowed_destination_addresses = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"]}
 ]
 
 [[routes]]

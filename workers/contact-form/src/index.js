@@ -72,14 +72,20 @@ ${message}
 Submitted: ${new Date().toISOString()}
       `.trim();
 
-      const emailMessage = new EmailMessage(
-        "contact@mindfulbalanceadhdcoaching.com", // sender (must be from your domain)
-        "cindy@mindfulbalanceadhdcoaching.com",   // recipient
-        `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
-      );
+      const recipients = ["cindy@mindfulbalanceadhdcoaching.com", "fcharris@gmail.com"];
+      
+      // Send email to both recipients
+      for (const recipient of recipients) {
+        const emailMessage = new EmailMessage(
+          "contact@mindfulbalanceadhdcoaching.com", // sender (must be from your domain)
+          recipient,
+          `Subject: New Contact Form: ${subject}\r\n\r\n${emailContent}`
+        );
 
-      await env.CONTACT_EMAIL.send(emailMessage);
-      console.log('✅ Email sent successfully');
+        await env.CONTACT_EMAIL.send(emailMessage);
+      }
+      
+      console.log('✅ Emails sent successfully to both recipients');
     } catch (emailError) {
       console.error('❌ Failed to send email:', emailError);
       // Continue anyway - form submission still logged
