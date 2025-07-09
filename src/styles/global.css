@@ -101,6 +101,11 @@
   p {
     @apply text-body;
   }
+
+  /* Fix for anchor links with fixed header */
+  html {
+    scroll-padding-top: 5rem; /* 80px - accounts for fixed header height */
+  }
 }
 
 @layer components {
