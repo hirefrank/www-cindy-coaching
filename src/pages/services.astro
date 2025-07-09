@@ -7,6 +7,7 @@ import { getGlobalSettings, getServicesContent } from '../lib/cosmic';
 const decodeHTMLEntities = (text: string) => {
     // Server-side safe decoding
     return text
+        .replace(/&nbsp;/g, ' ')
         .replace(/&quot;/g, '"')
         .replace(/&#39;/g, "'")
         .replace(/&lt;/g, '<')
