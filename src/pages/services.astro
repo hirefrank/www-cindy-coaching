@@ -117,20 +117,22 @@ const extractMainDescription = (html: string) => {
                     ))}
                   </div>
                 )}
-                <div class="mt-auto">
-                  <CalButton 
-                    calLink={getCalSlug(calendarLinks.consultation)}
-                    className="btn-primary w-full"
-                    namespace="services-consultation"
-                    client:load
-                  >
-                    Schedule Consultation
-                  </CalButton>
-                </div>
               </div>
             </div>
           );
         })}
+      </div>
+      
+      <!-- Single CTA button for Parents & Families section -->
+      <div class="text-center mt-48">
+        <CalButton 
+          calLink={getCalSlug(calendarLinks.consultation)}
+          className="btn-primary"
+          namespace="services-consultation"
+          client:load
+        >
+          Schedule Consultation
+        </CalButton>
       </div>
     </div>
   </section>
@@ -150,7 +152,6 @@ const extractMainDescription = (html: string) => {
         {groupsContent.map((service: any, index: number) => {
           const mainDescription = extractMainDescription(service.description);
           const bulletPoints = extractBulletPoints(service.description);
-          const isOfficeHours = service.title.includes('Office Hours');
           
           return (
             <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
@@ -166,20 +167,22 @@ const extractMainDescription = (html: string) => {
                     ))}
                   </div>
                 )}
-                <div class="mt-auto">
-                  <CalButton 
-                    calLink={getCalSlug(isOfficeHours ? calendarLinks.officeHours : calendarLinks.consultation)}
-                    className="btn-primary w-full"
-                    namespace={isOfficeHours ? "office-hours" : "services-consultation"}
-                    client:load
-                  >
-                    {isOfficeHours ? "Schedule Office Hours" : "Schedule Consultation"}
-                  </CalButton>
-                </div>
               </div>
             </div>
           );
         })}
+      </div>
+      
+      <!-- Single CTA button for Organizations section -->
+      <div class="text-center mt-48">
+        <CalButton 
+          calLink={getCalSlug(calendarLinks.consultation)}
+          className="btn-primary"
+          namespace="services-consultation"
+          client:load
+        >
+          Schedule Consultation
+        </CalButton>
       </div>
     </div>
   </section>

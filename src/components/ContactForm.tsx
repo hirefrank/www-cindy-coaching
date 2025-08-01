@@ -139,7 +139,7 @@ const ContactForm = () => {
             />
           </div>
           
-          <Button type="submit" className="btn-primary w-full">
+          <Button type="submit" className="btn-secondary w-full">
             Send Message
           </Button>
         </form>
