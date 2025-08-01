@@ -15,9 +15,14 @@ const ContactForm = () => {
     subject: '',
     message: ''
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (isSubmitting) return; // Prevent multiple submissions
+    
+    setIsSubmitting(true);
     
     try {
       const response = await fetch('/api/contact', {
@@ -47,6 +52,8 @@ const ContactForm = () => {
     } catch (error) {
       console.error('Error sending message:', error);
       alert('Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -139,8 +146,8 @@ const ContactForm = () => {
             />
           </div>
           
-          <Button type="submit" className="btn-secondary w-full">
-            Send Message
+          <Button type="submit" className="btn-secondary w-full" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send Message'}
           </Button>
         </form>
       </CardContent>

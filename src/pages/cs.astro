@@ -1,0 +1,65 @@
+---
+import { getGlobalSettings } from "../lib/cosmic";
+
+// Fetch global settings for site name
+const globalSettings = await getGlobalSettings();
+const siteName = globalSettings?.metadata?.site_name || "Mindful Balance ADHD Coaching";
+---
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="description" content="We're working on something amazing. Check back soon!" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>Coming Soon - {siteName}</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script is:inline>
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: {
+                            primary: '#4A7C59',
+                            secondary: '#8FBC8F'
+                        }
+                    }
+                }
+            }
+        </script>
+    </head>
+    <body class="min-h-screen bg-gradient-to-b from-slate-50 to-white">
+        <div class="min-h-screen flex items-center justify-center p-8 text-center">
+            <div class="max-w-2xl mx-auto animate-fade-in">
+                <img
+                    src="/images/logo.svg"
+                    alt={siteName}
+                    class="w-40 h-40 mx-auto mb-6"
+                />
+                
+                <h1 class="text-5xl md:text-6xl font-bold mb-6">
+                    Coming Soon
+                </h1>
+                
+
+            </div>
+        </div>
+        
+        <style>
+            @keyframes fade-in {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            .animate-fade-in {
+                animation: fade-in 1s ease-in-out;
+            }
+        </style>
+    </body>
+</html>
