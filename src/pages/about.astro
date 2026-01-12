@@ -86,9 +86,7 @@ const formatParagraphs = (content: string) => {
                 <div class="order-1 lg:order-2">
                     <h2 class="mb-24">{professionalHeader}</h2>
                     {formatParagraphs(professionalContent).map((paragraph: string) => (
-                        <p class="text-lg text-muted-foreground mb-24 leading-relaxed">
-                            {paragraph}
-                        </p>
+                        <p class="text-lg text-muted-foreground mb-24 leading-relaxed" set:html={paragraph} />
                     ))}
                 </div>
             </div>

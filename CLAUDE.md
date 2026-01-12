@@ -60,3 +60,22 @@ This is an Astro-based ADHD coaching website with a hybrid architecture:
 The project uses pnpm but npm commands work as well. When working with the contact form worker, navigate to its directory first as it has separate dependencies and deployment configuration.
 
 The site integrates with Cosmic CMS for content, so environment variables for Cosmic are required for full functionality. Content fetching includes error handling that returns null on failure.
+
+## Rendering HTML Content from Cosmic CMS
+
+When Cosmic CMS content includes HTML (like links, bold text, etc.), use Astro's `set:html` directive to render it properly:
+
+```astro
+<!-- Without set:html - HTML tags will be escaped and shown as text -->
+<p>{content}</p>
+
+<!-- With set:html - HTML will be rendered properly -->
+<p set:html={content} />
+```
+
+**Current pages using `set:html` for rich content:**
+- Homepage (`index.astro:274`) - Journey section description
+- About page (`about.astro:89`) - Professional Evolution section
+- Footer (`Layout.astro:255, 259`) - Short bio and credentials
+
+Only use `set:html` where HTML formatting is intentionally added in the CMS. Other content fields render as plain text for security.

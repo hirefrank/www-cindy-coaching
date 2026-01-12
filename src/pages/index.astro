@@ -162,6 +162,15 @@ const getCalSlug = (url: string) => {
                         class="w-full h-auto object-contain"
                     />
                 </div>
+                <div
+                    class="animate-fade-in w-[100px] sm:w-[125px] md:w-[150px]"
+                >
+                    <img
+                        src="/images/badges/sensory.png"
+                        alt="SUMMIT Professional Education Sensory Certification"
+                        class="w-full h-auto object-contain"
+                    />
+                </div>
             </div>
         </div>
     </section>
@@ -262,9 +271,7 @@ const getCalSlug = (url: string) => {
                         journeyDescription
                             .split("\n\n")
                             .map((paragraph: string) => (
-                                <p class="text-lg text-muted-foreground mb-24 leading-relaxed">
-                                    {paragraph}
-                                </p>
+                                <p class="text-lg text-muted-foreground mb-24 leading-relaxed" set:html={paragraph} />
                             ))
                     }
                     <a href="/about" class="btn-primary">
