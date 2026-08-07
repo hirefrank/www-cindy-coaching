@@ -41,8 +41,7 @@ const faqs = contactData?.metadata?.faqs?.faq_content || [
 
 // Extract calendar links with fallbacks
 const calendarLinks = {
-    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation",
-    officeHours: globalSettings?.metadata?.calendar_links?.office_hours || "cindy-romanzo/office-hours"
+    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation"
 };
 
 // Helper function to extract cal.com slug from full URL
@@ -115,21 +114,13 @@ const getCalSlug = (url: string) => {
                 Skip the form and schedule directly with me using the options below.
               </p>
               <div>
-                <CalButton 
+                <CalButton
                   calLink={getCalSlug(calendarLinks.consultation)}
-                  className="btn-primary w-full mb-16"
+                  className="btn-primary w-full"
                   namespace="contact-consultation"
                   client:load
                 >
                   Schedule Consultation
-                </CalButton>
-                <CalButton 
-                  calLink={getCalSlug(calendarLinks.officeHours)}
-                  className="btn-primary w-full"
-                  namespace="contact-office-hours"
-                  client:load
-                >
-                  Client Check-in
                 </CalButton>
               </div>
             </div>
