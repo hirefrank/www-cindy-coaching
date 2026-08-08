@@ -61,18 +61,21 @@ const extractBulletPoints = (html: string) => {
 
 // Helper function to extract main description from HTML
 const extractMainDescription = (html: string) => {
-    // Find the first <p> tag with id="isPasted" which seems to contain the main description
-    let match = html.match(/<p[^>]*id="isPasted"[^>]*>([^<]+)<\/p>/);
-    if (match && match[1].trim()) {
-        return decodeHTMLEntities(match[1].trim());
+    // Find the first <p> tag with id="isPasted" which seems to contain the main description,
+    // skipping any that are actually bullet lines (Cosmic sometimes tags those too)
+    for (const match of html.matchAll(/<p[^>]*id="isPasted"[^>]*>([^<]+)<\/p>/g)) {
+        if (!match[1].includes('&bull;') && match[1].trim()) {
+            return decodeHTMLEntities(match[1].trim());
+        }
     }
-    
+
     // If no isPasted, look for first <p> without bullet points
-    match = html.match(/<p[^>]*>(?!.*&bull;)([^<]+)<\/p>/);
-    if (match && match[1].trim()) {
-        return decodeHTMLEntities(match[1].trim());
+    for (const match of html.matchAll(/<p[^>]*>([^<]+)<\/p>/g)) {
+        if (!match[1].includes('&bull;') && match[1].trim()) {
+            return decodeHTMLEntities(match[1].trim());
+        }
     }
-    
+
     return '';
 };
 ---
@@ -107,9 +110,11 @@ const extractMainDescription = (html: string) => {
             <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
               <div class="card-content p-32 flex flex-col flex-grow">
                 <h3 class="mb-16">{decodeHTMLEntities(service.title)}</h3>
-                <p class="text-muted-foreground mb-24 leading-relaxed">
-                  {mainDescription}
-                </p>
+                {mainDescription && (
+                  <p class="text-muted-foreground mb-24 leading-relaxed">
+                    {mainDescription}
+                  </p>
+                )}
                 {bulletPoints.length > 0 && (
                   <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
                     {bulletPoints.map((bullet: string) => (
@@ -157,9 +162,11 @@ const extractMainDescription = (html: string) => {
             <div class="card hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
               <div class="card-content p-32 flex flex-col flex-grow">
                 <h3 class="mb-16">{decodeHTMLEntities(service.title)}</h3>
-                <p class="text-muted-foreground mb-24 leading-relaxed">
-                  {mainDescription}
-                </p>
+                {mainDescription && (
+                  <p class="text-muted-foreground mb-24 leading-relaxed">
+                    {mainDescription}
+                  </p>
+                )}
                 {bulletPoints.length > 0 && (
                   <div class="space-y-8 text-sm text-muted-foreground mb-24 flex-grow">
                     {bulletPoints.map((bullet: string) => (
