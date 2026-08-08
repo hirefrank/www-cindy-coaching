@@ -11,6 +11,7 @@ const contactData = await getContactContent();
 // Extract global settings with fallbacks
 const siteEmail = globalSettings?.metadata?.email || "cindy@mindfulbalanceadhdcoaching.com";
 const siteLocation = globalSettings?.metadata?.location || "Bergen County, NJ";
+const siteLinkedin = globalSettings?.metadata?.linkedin_url || "https://www.linkedin.com/in/cynthia-romanzo-19566a15";
 
 // Extract contact content with fallbacks
 const headline = contactData?.metadata?.headline || "Let's Connect";
@@ -41,8 +42,7 @@ const faqs = contactData?.metadata?.faqs?.faq_content || [
 
 // Extract calendar links with fallbacks
 const calendarLinks = {
-    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation",
-    officeHours: globalSettings?.metadata?.calendar_links?.office_hours || "cindy-romanzo/office-hours"
+    consultation: globalSettings?.metadata?.calendar_links?.free_consultation || "cindy-romanzo/consultation"
 };
 
 // Helper function to extract cal.com slug from full URL
@@ -105,6 +105,18 @@ const getCalSlug = (url: string) => {
                 ))}
               </div>
             </div>
+
+            <div class="flex items-start space-x-16">
+              <div class="w-12 h-12 bg-secondary/10 rounded-lg flex items-center justify-center flex-shrink-0">
+                <span class="text-secondary font-bold">🔗</span>
+              </div>
+              <div>
+                <h3 class="mb-8">LinkedIn</h3>
+                <a href={siteLinkedin} target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-primary transition-colors">
+                  {siteLinkedin.replace('https://www.', '')}
+                </a>
+              </div>
+            </div>
           </div>
           
           <!-- Quick Scheduling -->
@@ -115,21 +127,13 @@ const getCalSlug = (url: string) => {
                 Skip the form and schedule directly with me using the options below.
               </p>
               <div>
-                <CalButton 
+                <CalButton
                   calLink={getCalSlug(calendarLinks.consultation)}
-                  className="btn-primary w-full mb-16"
+                  className="btn-primary w-full"
                   namespace="contact-consultation"
                   client:load
                 >
                   Schedule Consultation
-                </CalButton>
-                <CalButton 
-                  calLink={getCalSlug(calendarLinks.officeHours)}
-                  className="btn-primary w-full"
-                  namespace="contact-office-hours"
-                  client:load
-                >
-                  Client Check-in
                 </CalButton>
               </div>
             </div>
