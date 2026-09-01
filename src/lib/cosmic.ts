@@ -101,10 +101,34 @@ export async function getServicesContent() {
       slug: "services"
     }).props("slug,title,metadata,type")
     .depth(1);
-    
+     
     return response.object;
   } catch (error) {
     console.error('Error fetching services content from Cosmic:', error);
     return null;
+  }
+}
+
+// Helper function to get testimonials (published only)
+export async function getTestimonials() {
+  try {
+    const response = await cosmic.objects.find({
+      type: "testimonials",
+      status: "published"
+    }).props("slug,title,status,metadata")
+    .sort("created_at");
+
+    // Extra guard: ensure only published (API may return drafts if misconfigured)
+    const objects = (response.objects || []).filter((obj: any) => obj.status === "published");
+    // Sort by metadata.order if present, fallback to created order
+    objects.sort((a: any, b: any) => {
+      const aOrder = a.metadata?.order ?? 999;
+      const bOrder = b.metadata?.order ?? 999;
+      return Number(aOrder) - Number(bOrder);
+    });
+    return objects;
+  } catch (error) {
+    // No published testimonials is not an error — return empty so section hides
+    return [];
   }
 }

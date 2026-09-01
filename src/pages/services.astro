@@ -1,7 +1,8 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import CalButton from '../components/CalButton';
-import { getGlobalSettings, getServicesContent } from '../lib/cosmic';
+import Testimonials from '../components/Testimonials.astro';
+import { getGlobalSettings, getServicesContent, getTestimonials } from '../lib/cosmic';
 
 // Helper function to decode HTML entities
 const decodeHTMLEntities = (text: string) => {
@@ -18,6 +19,15 @@ const decodeHTMLEntities = (text: string) => {
 // Fetch content from Cosmic
 const globalSettings = await getGlobalSettings();
 const servicesData = await getServicesContent();
+const testimonialsData = await getTestimonials();
+const testimonials = (testimonialsData || []).map((obj: any) => ({
+  quote: obj.metadata?.quote || obj.title || "",
+  attribution: obj.metadata?.attribution || "Client",
+  context: obj.metadata?.context || "",
+  initials: obj.metadata?.initials || "",
+})).filter((t: any) => t.quote);
+
+const isPreview = import.meta.env.DEV && testimonials.length === 0;
 
 // Extract content with fallbacks
 const headline = decodeHTMLEntities(servicesData?.metadata?.headline || "Comprehensive ADHD Coaching Services");
@@ -193,5 +203,7 @@ const extractMainDescription = (html: string) => {
       </div>
     </div>
   </section>
+
+  <Testimonials testimonials={testimonials} preview={isPreview} />
 
 </Layout>

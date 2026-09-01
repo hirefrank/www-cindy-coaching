@@ -1,11 +1,23 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import CalButton from "../components/CalButton";
-import { getHomepageContent, getGlobalSettings } from "../lib/cosmic";
+import Testimonials from "../components/Testimonials.astro";
+import { getHomepageContent, getGlobalSettings, getTestimonials } from "../lib/cosmic";
 
 // Fetch content from Cosmic
 const homepageData = await getHomepageContent();
 const globalSettings = await getGlobalSettings();
+const testimonialsData = await getTestimonials();
+
+// Map Cosmic testimonials to component props
+const testimonials = (testimonialsData || []).map((obj: any) => ({
+  quote: obj.metadata?.quote || obj.metadata?.display_quote || obj.title || "",
+  attribution: obj.metadata?.attribution || obj.metadata?.author || "Client",
+  context: obj.metadata?.context || obj.metadata?.role || "",
+  initials: obj.metadata?.initials || "",
+})).filter((t: any) => t.quote);
+
+const isPreview = import.meta.env.DEV && testimonials.length === 0;
 
 // Extract content with fallbacks
 const headline =
@@ -293,4 +305,6 @@ const getCalSlug = (url: string) => {
             </div>
         </div>
     </section>
+
+    <Testimonials testimonials={testimonials} preview={isPreview} />
 </Layout>

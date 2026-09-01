@@ -1,0 +1,94 @@
+---
+export interface Testimonial {
+  quote: string;
+  attribution: string;
+  context?: string;
+  initials?: string;
+}
+
+export interface Props {
+  testimonials?: Testimonial[];
+  headline?: string;
+  description?: string;
+  preview?: boolean;
+}
+
+const {
+  testimonials = [],
+  headline = "What Clients Are Saying",
+  description = "Real feedback from families and individuals who've found practical strategies for ADHD and executive function challenges.",
+  preview = false,
+} = Astro.props;
+
+// Hide section entirely when no published testimonials — no fallback in production.
+// In dev (pnpm run dev), show preview placeholders when no published data so Frank can review design.
+const showPreview = preview;
+const previewTestimonials: Testimonial[] = [
+  {
+    quote: "Cindy helped our family understand ADHD as a brain-body connection. Her practical strategies have made daily routines so much more manageable.",
+    attribution: "Parent of Teen Client",
+    context: "Bergen County, NJ",
+    initials: "S.M.",
+  },
+  {
+    quote: "As an adult with ADHD, I finally have sustainable systems that work with my brain instead of against it. Cindy's coaching is both compassionate and practical.",
+    attribution: "Adult Coaching Client",
+    context: "Virtual Client",
+    initials: "J.L.",
+  },
+  {
+    quote: "The workshop Cindy led for our teachers changed how we support neurodiverse learners. Insightful, engaging, and immediately useful.",
+    attribution: "School Professional",
+    context: "Workshop Attendee",
+    initials: "R.K.",
+  },
+];
+
+const items = testimonials.length > 0 ? testimonials : (showPreview ? previewTestimonials : []);
+const isPreview = testimonials.length === 0 && showPreview;
+const shouldRender = items.length > 0;
+---
+
+{shouldRender && (
+<section class="section-padding bg-muted/30" id="testimonials">
+  <div class="max-w-7xl mx-auto container-padding">
+    <div class="text-center mb-64">
+      <h2 class="mb-24">{headline}</h2>
+      <p class="text-xl text-muted-foreground max-w-3xl mx-auto">
+        {description}
+      </p>
+      {isPreview && (
+        <p class="text-sm text-muted-foreground/70 mt-16 italic">
+          Preview — add published testimonials in Cosmic (Object Type: <code class="bg-muted px-2 py-1 rounded text-xs">testimonials</code>) or remove <code class="bg-muted px-1 rounded text-xs">?preview=testimonials</code>
+        </p>
+      )}
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-32">
+      {items.map((t) => (
+        <div class="bg-card rounded-lg shadow-sm p-32 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+          <div class="mb-24 text-primary/20">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M6 17h3l2-4V7H5v6h3l-2 4zm9 0h3l2-4V7h-6v6h3l-2 4z" />
+            </svg>
+          </div>
+          <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">
+            "{t.quote}"
+          </blockquote>
+          <div class="flex items-center gap-16 pt-24 border-t border-border">
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
+            </div>
+            <div>
+              <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
+              {t.context && (
+                <p class="text-xs text-muted-foreground leading-none">{t.context}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+)}
