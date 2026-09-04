@@ -88,14 +88,9 @@ const carouselId = `testimonials-carousel-${Math.random().toString(36).slice(2, 
                 </svg>
               </div>
               <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">"{t.quote}"</blockquote>
-              <div class="flex items-center gap-16 pt-24 border-t border-border">
-                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
-                </div>
-                <div>
-                  <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
-                  {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
-                </div>
+              <div class="pt-24 border-t border-border">
+                <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
+                {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
               </div>
             </div>
           ))}
@@ -207,14 +202,9 @@ const carouselId = `testimonials-carousel-${Math.random().toString(36).slice(2, 
               </svg>
             </div>
             <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">"{t.quote}"</blockquote>
-            <div class="flex items-center gap-16 pt-24 border-t border-border">
-              <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
-              </div>
-              <div>
-                <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
-                {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
-              </div>
+            <div class="pt-24 border-t border-border">
+              <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
+              {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
             </div>
           </div>
         ))}
