@@ -11,6 +11,8 @@ export interface Props {
   headline?: string;
   description?: string;
   preview?: boolean;
+  limit?: number;
+  variant?: 'grid' | 'carousel';
 }
 
 const {
@@ -18,6 +20,8 @@ const {
   headline = "What Clients Are Saying",
   description = "Real feedback from families and individuals who've found practical strategies for ADHD and executive function challenges.",
   preview = false,
+  limit,
+  variant = 'grid',
 } = Astro.props;
 
 // Hide section entirely when no published testimonials — no fallback in production.
@@ -44,9 +48,11 @@ const previewTestimonials: Testimonial[] = [
   },
 ];
 
-const items = testimonials.length > 0 ? testimonials : (showPreview ? previewTestimonials : []);
+const rawItems = testimonials.length > 0 ? testimonials : (showPreview ? previewTestimonials : []);
+const items = typeof limit === 'number' ? rawItems.slice(0, limit) : rawItems;
 const isPreview = testimonials.length === 0 && showPreview;
 const shouldRender = items.length > 0;
+const carouselId = `testimonials-carousel-${Math.random().toString(36).slice(2, 8)}`;
 ---
 
 {shouldRender && (
@@ -64,31 +70,156 @@ const shouldRender = items.length > 0;
       )}
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-32">
-      {items.map((t) => (
-        <div class="bg-card rounded-lg shadow-sm p-32 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
-          <div class="mb-24 text-primary/20">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M6 17h3l2-4V7H5v6h3l-2 4zm9 0h3l2-4V7h-6v6h3l-2 4z" />
-            </svg>
-          </div>
-          <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">
-            "{t.quote}"
-          </blockquote>
-          <div class="flex items-center gap-16 pt-24 border-t border-border">
-            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-              <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
+    {variant === 'carousel' && items.length > 1 ? (
+      <div class="relative" data-carousel-root={carouselId}>
+        <div
+          id={carouselId}
+          class="flex gap-24 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-16 -mx-16 px-16 scrollbar-hide"
+          style="scrollbar-width:none;-ms-overflow-style:none;"
+          tabindex="0"
+          aria-label="Testimonials carousel"
+          aria-roledescription="carousel"
+        >
+          {items.map((t) => (
+            <div class="snap-center shrink-0 w-[85%] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] bg-card rounded-lg shadow-sm p-32 flex flex-col hover:shadow-lg transition-shadow duration-300" role="group" aria-roledescription="slide">
+              <div class="mb-24 text-primary/20">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M6 17h3l2-4V7H5v6h3l-2 4zm9 0h3l2-4V7h-6v6h3l-2 4z" />
+                </svg>
+              </div>
+              <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">"{t.quote}"</blockquote>
+              <div class="flex items-center gap-16 pt-24 border-t border-border">
+                <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                  <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
+                </div>
+                <div>
+                  <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
+                  {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
+                </div>
+              </div>
             </div>
-            <div>
-              <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
-              {t.context && (
-                <p class="text-xs text-muted-foreground leading-none">{t.context}</p>
-              )}
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
-    </div>
+        <div class="flex items-center justify-center gap-12 mt-24">
+          <button type="button" class="w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center hover:bg-muted transition-colors" aria-label="Previous testimonial" data-carousel-prev>‹</button>
+          <div class="flex gap-8" role="tablist" aria-label="Testimonial pages" data-carousel-dots>
+            {items.map((_, i) => (
+              <button type="button" role="tab" aria-label={`Go to page ${i + 1}`} data-carousel-dot={i} class={`h-2.5 rounded-full transition-all duration-200 ${i === 0 ? 'w-6 bg-primary' : 'w-2.5 bg-border'}`}></button>
+            ))}
+          </div>
+          <button type="button" class="w-9 h-9 rounded-full border border-border bg-card flex items-center justify-center hover:bg-muted transition-colors" aria-label="Next testimonial" data-carousel-next>›</button>
+        </div>
+      </div>
+      <script define:vars={{ carouselId }}>
+        (() => {
+          const root = document.querySelector(`[data-carousel-root="${carouselId}"]`);
+          if (!root) return;
+          const scroller = root.querySelector(`#${CSS.escape(carouselId)}`);
+          const prev = root.querySelector('[data-carousel-prev]');
+          const next = root.querySelector('[data-carousel-next]');
+          const dotsWrap = root.querySelector('[data-carousel-dots]');
+          let dots = [...root.querySelectorAll('[data-carousel-dot]')];
+          if (!scroller || !prev || !next || !dotsWrap) return;
+          const total = dots.length;
+
+          const perPage = () => {
+            const w = window.innerWidth;
+            if (w >= 1024) return 3;
+            if (w >= 768) return 2;
+            return 1;
+          };
+          const pageCount = () => Math.ceil(total / perPage());
+          const pageStep = () => scroller.clientWidth + 24; // clientWidth + gap to land on next page
+
+          const syncDotsStructure = () => {
+            const pages = pageCount();
+            dots.forEach((d, i) => {
+              if (i < pages) {
+                d.style.display = '';
+                d.setAttribute('aria-label', `Go to page ${i + 1} of ${pages}`);
+              } else {
+                d.style.display = 'none';
+              }
+            });
+          };
+
+          const currentPage = () => {
+            const pages = pageCount();
+            if (pages <= 1) return 0;
+            const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+            if (maxScroll <= 0) return 0;
+            const raw = scroller.scrollLeft / maxScroll;
+            return Math.min(pages - 1, Math.max(0, Math.round(raw * (pages - 1))));
+          };
+
+          const update = () => {
+            const pages = pageCount();
+            const idx = currentPage();
+            dots.forEach((d, i) => {
+              if (i >= pages) return;
+              d.className = `h-2.5 rounded-full transition-all duration-200 ${i === idx ? 'w-6 bg-primary' : 'w-2.5 bg-border'}`;
+              d.setAttribute('aria-selected', String(i === idx));
+            });
+            prev.disabled = idx === 0;
+            next.disabled = idx === pages - 1;
+            prev.style.opacity = idx === 0 ? '0.4' : '1';
+            next.style.opacity = idx === pages - 1 ? '0.4' : '1';
+            dotsWrap.style.display = pages <= 1 ? 'none' : '';
+          };
+
+          const goToPage = (page) => {
+            const pages = pageCount();
+            const clamped = Math.min(pages - 1, Math.max(0, page));
+            const maxScroll = scroller.scrollWidth - scroller.clientWidth;
+            const left = pages <= 1 ? 0 : (maxScroll * clamped) / (pages - 1);
+            scroller.scrollTo({ left, behavior: 'smooth' });
+          };
+
+          prev.addEventListener('click', () => goToPage(currentPage() - 1));
+          next.addEventListener('click', () => goToPage(currentPage() + 1));
+          dots.forEach((d, i) => d.addEventListener('click', () => goToPage(i)));
+
+          let ticking = false;
+          scroller.addEventListener('scroll', () => {
+            if (!ticking) {
+              requestAnimationFrame(() => { update(); ticking = false; });
+              ticking = true;
+            }
+          }, { passive: true });
+
+          scroller.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') { e.preventDefault(); goToPage(currentPage() - 1); }
+            if (e.key === 'ArrowRight') { e.preventDefault(); goToPage(currentPage() + 1); }
+          });
+
+          window.addEventListener('resize', () => { syncDotsStructure(); update(); });
+          syncDotsStructure();
+          update();
+        })();
+      </script>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-32">
+        {items.map((t) => (
+          <div class="bg-card rounded-lg shadow-sm p-32 flex flex-col h-full hover:shadow-lg transition-shadow duration-300">
+            <div class="mb-24 text-primary/20">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M6 17h3l2-4V7H5v6h3l-2 4zm9 0h3l2-4V7h-6v6h3l-2 4z" />
+              </svg>
+            </div>
+            <blockquote class="text-lg leading-relaxed text-foreground mb-24 flex-grow">"{t.quote}"</blockquote>
+            <div class="flex items-center gap-16 pt-24 border-t border-border">
+              <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <span class="text-sm font-semibold text-primary">{t.initials || t.attribution.slice(0, 2).toUpperCase()}</span>
+              </div>
+              <div>
+                <p class="text-sm font-medium text-foreground leading-none mb-4">{t.attribution}</p>
+                {t.context && <p class="text-xs text-muted-foreground leading-none">{t.context}</p>}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )}
   </div>
 </section>
 )}
